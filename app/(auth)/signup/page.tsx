@@ -3,6 +3,7 @@
 import { Button, Form, Input, Link } from "@heroui/react";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
+import { signup } from "./actions";
 
 const SignupPage = () => {
   const [form, setForm] = useState({
@@ -17,6 +18,9 @@ const SignupPage = () => {
         autoCapitalize="off"
         autoComplete="off"
         className="w-1/4 border rounded-lg p-8 pt-4 shadow-md"
+        action={async (formData) => {
+          await signup(formData);
+        }}
       >
         <Link href="/" className="text-p mb-2">
           <IoIosArrowBack className="-ml-1" />
@@ -46,7 +50,7 @@ const SignupPage = () => {
           placeholder="Enter your password"
           type="password"
           validate={(value) => {
-            if (value.length < 8) {
+            if (value.length < 8 && value.length > 0) {
               return "Password must be at least 8 characters long";
             }
           }}
@@ -65,7 +69,7 @@ const SignupPage = () => {
           placeholder="Enter your password again"
           type="password"
           validate={(value) => {
-            if (value !== form.password) {
+            if (value !== form.password && form.password.length > 0) {
               return "Passwords do not match";
             }
           }}

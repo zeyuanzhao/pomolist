@@ -3,6 +3,7 @@
 import { Button, Form, Input, Link } from "@heroui/react";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
+import { login } from "./actions";
 
 const LoginPage = () => {
   const [form, setForm] = useState({
@@ -16,6 +17,9 @@ const LoginPage = () => {
         autoCapitalize="off"
         autoComplete="off"
         className="w-1/4 border rounded-lg p-8 pt-4 shadow-md"
+        action={async (formData) => {
+          await login(formData);
+        }}
       >
         <Link href="/" className="text-p mb-2">
           <IoIosArrowBack className="-ml-1" />
