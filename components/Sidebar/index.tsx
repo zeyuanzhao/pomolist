@@ -3,7 +3,7 @@ import { AccountDropdown } from "./AccountDropdown";
 
 export const SideBar = () => {
   return (
-    <div className="border flex flex-col w-64 bg-bg p-4">
+    <div className="border-r flex flex-col w-64 bg-bg p-4">
       <div className="flex flex-col mb-8">
         <h1 className="p-1 mb-2 text-3xl font-bold">Pomolist</h1>
         <AccountDropdown username={null} />
