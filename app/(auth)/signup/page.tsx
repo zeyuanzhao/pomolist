@@ -4,14 +4,15 @@ import { Button, Form, Input, Link } from "@heroui/react";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 
-const LoginPage = () => {
+const SignupPage = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
+    passwordConfirm: "",
   });
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center border-4">
+    <div className="flex-1 flex flex-col items-center justify-center">
       <Form
         autoCapitalize="off"
         autoComplete="off"
@@ -21,7 +22,7 @@ const LoginPage = () => {
           <IoIosArrowBack className="-ml-1" />
           Back
         </Link>
-        <h1 className="text-4xl mb-3 font-semibold">Log In</h1>
+        <h1 className="text-4xl mb-3 font-semibold">Sign Up</h1>
         <Input
           isRequired
           errorMessage="Please enter a valid email"
@@ -44,17 +45,41 @@ const LoginPage = () => {
           name="password"
           placeholder="Enter your password"
           type="password"
+          validate={(value) => {
+            if (value.length < 8) {
+              return "Password must be at least 8 characters long";
+            }
+          }}
           value={form.password}
           onValueChange={(value) => {
             setForm((prev) => ({ ...prev, password: value }));
           }}
         />
+        <Input
+          isRequired
+          classNames={{ inputWrapper: "mt-4" }}
+          // errorMessage="Please enter a valid password"
+          label="Confirm Password"
+          labelPlacement="outside"
+          name="passwordConfirm"
+          placeholder="Enter your password again"
+          type="password"
+          validate={(value) => {
+            if (value !== form.password) {
+              return "Passwords do not match";
+            }
+          }}
+          value={form.passwordConfirm}
+          onValueChange={(value) => {
+            setForm((prev) => ({ ...prev, passwordConfirm: value }));
+          }}
+        />
         <div className="flex flex-row justify-between items-center mt-4 w-full">
           <Button className="bg-p text-white" type="submit">
-            Log In
+            Sign Up
           </Button>
-          <Button as={Link} className="" href="/signup" variant="light">
-            Create Account
+          <Button as={Link} className="" href="/login" variant="light">
+            Log In Here
           </Button>
         </div>
       </Form>
@@ -62,4 +87,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

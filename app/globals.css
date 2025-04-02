@@ -7,14 +7,17 @@
     --color-hover: #f0f0f0;
     --color-bgs: #f9f9f9;
     --color-bgp: #ff5656;
-    --color-s: #000000;
-    --color-p: #ffffff;
+    --color-ts: #000000;
+    --color-tp: #ffffff;
+    --color-p: #f00000;
   }
 
   :root [class~="dark"] {
     --color-hover: #f0f0f0;
     --color-bgs: #f9f9f9;
     --color-bgp: #ff5656;
-    --color-p: #ffffff;
+    --color-ts: #000000;
+    --color-tp: #ffffff;
+    --color-p: #f00000;
   }
 }
