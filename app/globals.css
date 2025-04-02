@@ -5,11 +5,16 @@
 @layer base {
   :root {
     --color-hover: #f0f0f0;
-    --color-bg: #f9f9f9;
+    --color-bgs: #f9f9f9;
+    --color-bgp: #ff5656;
+    --color-s: #000000;
+    --color-p: #ffffff;
   }
 
   :root [class~="dark"] {
     --color-hover: #f0f0f0;
-    --color-bg: #f9f9f9;
+    --color-bgs: #f9f9f9;
+    --color-bgp: #ff5656;
+    --color-p: #ffffff;
   }
 }

@@ -1,5 +1,5 @@
 const BasketPage = () => {
-  return <div></div>;
+  return <div className="w-full"></div>;
 };
 
 export default BasketPage;

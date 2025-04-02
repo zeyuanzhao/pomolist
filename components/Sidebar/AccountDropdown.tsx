@@ -15,8 +15,8 @@ export const AccountDropdown = ({ username }: { username: string | null }) => {
     <Dropdown>
       <DropdownTrigger className="hover:bg-hover rounded-lg p-1">
         <div className="flex flex-row items-center gap-2 cursor-pointer">
-          <Avatar />
-          <p>{username || "Not Logged In"}</p>
+          <Avatar name="AA" />
+          <p>{username || "Logged Out"}</p>
           <Spacer x={6} />
           <FaChevronDown />
         </div>

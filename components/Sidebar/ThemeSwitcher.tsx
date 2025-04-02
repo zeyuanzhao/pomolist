@@ -18,7 +18,7 @@ export const ThemeSwitcher = () => {
       {mounted && (
         <Button
           isIconOnly
-          className="rounded-lg bg-transparent border-0"
+          className="rounded-lg bg-transparent border-0 text-s"
           variant="ghost"
           onPress={() => setTheme(theme === "light" ? "dark" : "light")}
         >

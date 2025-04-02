@@ -4,7 +4,7 @@ import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export const SideBar = () => {
   return (
-    <div className="border-r flex flex-col w-64 bg-bg p-4 justify-between">
+    <div className="border-r flex flex-col w-64 bg-bgs p-4 justify-between">
       <div>
         <div className="flex flex-col mb-8">
           <h1 className="p-1 mb-2 text-3xl font-bold">Pomolist</h1>

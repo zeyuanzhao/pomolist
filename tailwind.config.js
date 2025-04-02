@@ -13,7 +13,10 @@ module.exports = {
     extend: {
       colors: {
         hover: "rgb(from var(--color-hover) r g b / <alpha-value>)",
-        bg: "rgb(from var(--color-bg) r g b / <alpha-value>)",
+        bgs: "rgb(from var(--color-bgs) r g b / <alpha-value>)",
+        bgp: "rgb(from var(--color-bgp) r g b / <alpha-value>)",
+        s: "rgb(from var(--color-s) r g b / <alpha-value>)",
+        p: "rgb(from var(--color-p) r g b / <alpha-value>)",
       },
     },
   },
