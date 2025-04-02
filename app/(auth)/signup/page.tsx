@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Form, Input, Link } from "@heroui/react";
+import { addToast, Button, Form, Input, Link } from "@heroui/react";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { signup } from "./actions";
@@ -19,7 +19,16 @@ const SignupPage = () => {
         autoComplete="off"
         className="w-1/4 border rounded-lg p-8 pt-4 shadow-md"
         action={async (formData) => {
-          await signup(formData);
+          const res = await signup(formData);
+          if (res.error) {
+            addToast({
+              title: "Error",
+              description: res.error.toString(),
+              timeout: 10000,
+              shouldShowTimeoutProgress: true,
+              color: "danger",
+            });
+          }
         }}
       >
         <Link href="/" className="text-p mb-2">
