@@ -22,8 +22,12 @@ export const AccountDropdown = ({ username }: { username: string | null }) => {
         </div>
       </DropdownTrigger>
       <DropdownMenu>
-        <DropdownItem key="account">Account</DropdownItem>
-        <DropdownItem key="logout">Log Out</DropdownItem>
+        <DropdownItem key="account" href="/app/account">
+          Account
+        </DropdownItem>
+        <DropdownItem key="logout" href="/logout">
+          Log Out
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

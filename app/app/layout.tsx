@@ -1,4 +1,4 @@
-import { SideBar } from "@/components/Sidebar";
+import { SideBar } from "@/components/SideBar";
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
