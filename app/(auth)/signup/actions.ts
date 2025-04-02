@@ -29,5 +29,5 @@ export const signup = async (formData: FormData) => {
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/verify");
 };
