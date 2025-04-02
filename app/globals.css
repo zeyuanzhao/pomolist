@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --color-hover: #f0f0f0;
+    --color-bg: #f9f9f9;
+  }
+
+  :root [class~="dark"] {
+    --color-hover: #f0f0f0;
+    --color-bg: #f9f9f9;
+  }
+}
