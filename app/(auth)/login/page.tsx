@@ -12,7 +12,7 @@ const LoginPage = () => {
   });
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center border-4">
+    <div className="flex-1 flex flex-col items-center justify-center">
       <Form
         autoCapitalize="off"
         autoComplete="off"
