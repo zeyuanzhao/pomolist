@@ -23,14 +23,14 @@ export const PomodoroDropdown = ({
   return (
     <Dropdown>
       <DropdownTrigger className={triggerClassName}>
-        <Button>{pomodoros.get(currentPomodoro)?.title}</Button>
+        <Button>{pomodoros.get(currentPomodoro)?.name}</Button>
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Static Actions"
         items={pomodoros}
         onAction={(key) => setCurrentPomodoro(key as string)}
       >
-        {([id, pomo]) => <DropdownItem key={id}>{pomo.title}</DropdownItem>}
+        {([id, pomo]) => <DropdownItem key={id}>{pomo.name}</DropdownItem>}
       </DropdownMenu>
     </Dropdown>
   );

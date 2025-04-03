@@ -23,16 +23,26 @@ export const signupSchema = z
     }
   });
 
+export const taskSchema = z.object({
+  name: z.string().min(1, "Task name is required"),
+  description: z.string().optional(),
+  duration: z
+    .number()
+    .min(30, "Duration must be at least 30 seconds")
+    .optional(),
+  dueDate: z.string().datetime({ offset: true }).optional(),
+});
+
 export interface PomodoroInfo {
   id: string;
-  title: string;
+  name: string;
   duration: number;
   tasks: TaskInfo[];
 }
 
 export interface TaskInfo {
   id: string;
-  title: string;
+  name: string;
   completed: boolean;
   pomodoroId: string;
 }
