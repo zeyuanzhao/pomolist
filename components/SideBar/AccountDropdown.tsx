@@ -8,20 +8,20 @@ import {
   DropdownTrigger,
   Spacer,
 } from "@heroui/react";
-import { FaChevronDown } from "react-icons/fa";
+import { IoChevronDown } from "react-icons/io5";
 
 export const AccountDropdown = ({ username }: { username?: string }) => {
   return (
     <Dropdown>
       <DropdownTrigger className="hover:bg-hover rounded-lg p-1">
-        <div className="flex flex-row items-center gap-2 cursor-pointer justify-between">
-          <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-x-2 cursor-pointer justify-between">
+          <div className="flex flex-row items-center gap-x-2">
             <Avatar name={username} />
-            <p className="text-ellipsis overflow-hidden max-w-36">
+            <p className="text-ellipsis overflow-hidden max-w-[8.5rem]">
               {username || "Logged Out"}
             </p>
           </div>
-          <FaChevronDown className="mr-1" />
+          <IoChevronDown className="mr-1" size={"1.25em"} />
         </div>
       </DropdownTrigger>
       <DropdownMenu>

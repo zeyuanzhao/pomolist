@@ -22,3 +22,17 @@ export const signupSchema = z
       });
     }
   });
+
+export interface PomodoroInfo {
+  id: string;
+  title: string;
+  duration: number;
+  tasks: TaskInfo[];
+}
+
+export interface TaskInfo {
+  id: string;
+  title: string;
+  completed: boolean;
+  pomodoroId: string;
+}
