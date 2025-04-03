@@ -36,3 +36,8 @@ export interface TaskInfo {
   completed: boolean;
   pomodoroId: string;
 }
+
+export interface Dimensions {
+  width: number;
+  height: number;
+}
