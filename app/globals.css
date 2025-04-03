@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --color-hover: #f0f0f0;
+    --color-bgs: #f9f9f9;
+    --color-bgp: #ff5656;
+    --color-ts: #000000;
+    --color-tp: #ffffff;
+    --color-p: #f00000;
+  }
+
+  :root [class~="dark"] {
+    --color-hover: #f0f0f0;
+    --color-bgs: #f9f9f9;
+    --color-bgp: #ff5656;
+    --color-ts: #000000;
+    --color-tp: #ffffff;
+    --color-p: #f00000;
+  }
+}

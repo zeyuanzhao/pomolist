@@ -1,16 +1,17 @@
 "use server";
 
-import { loginSchema } from "@/interfaces";
+import { loginSchema, signupSchema } from "@/interfaces";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export const login = async (formData: FormData) => {
+export const signup = async (formData: FormData) => {
   const supabase = await createClient();
 
-  const data = loginSchema.safeParse({
+  const data = signupSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
+    passwordConfirm: formData.get("passwordConfirm"),
   });
 
   if (!data.success) {
@@ -19,7 +20,7 @@ export const login = async (formData: FormData) => {
     };
   }
 
-  const { error } = await supabase.auth.signInWithPassword(data.data);
+  const { error } = await supabase.auth.signUp(data.data);
 
   if (error) {
     return {
@@ -28,5 +29,5 @@ export const login = async (formData: FormData) => {
   }
 
   revalidatePath("/", "layout");
-  redirect("/app");
+  redirect("/verify");
 };

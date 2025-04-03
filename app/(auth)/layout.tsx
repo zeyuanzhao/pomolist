@@ -1,4 +1,3 @@
-import { SideBar } from "@/components/SideBar";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -11,15 +10,12 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/login");
+  if (user && !pathname?.includes("logout")) {
+    redirect("/app");
   }
 
   return (
-    <div className="flex flex-row w-screen h-screen text-ts">
-      <SideBar />
-      {children}
-    </div>
+    <div className="flex flex-col w-screen h-screen text-s">{children}</div>
   );
 };
 

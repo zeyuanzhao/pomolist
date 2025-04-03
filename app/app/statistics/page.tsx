@@ -1,5 +1,5 @@
 const StatisticsPage = () => {
-  return <div></div>;
+  return <div className="flex-1"></div>;
 };
 
 export default StatisticsPage;

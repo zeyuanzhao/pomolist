@@ -10,7 +10,16 @@ module.exports = {
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        hover: "rgb(from var(--color-hover) r g b / <alpha-value>)",
+        bgs: "rgb(from var(--color-bgs) r g b / <alpha-value>)",
+        bgp: "rgb(from var(--color-bgp) r g b / <alpha-value>)",
+        ts: "rgb(from var(--color-ts) r g b / <alpha-value>)",
+        tp: "rgb(from var(--color-tp) r g b / <alpha-value>)",
+        p: "rgb(from var(--color-p) r g b / <alpha-value>)",
+      },
+    },
   },
   darkMode: "class",
   plugins: [heroui()],
