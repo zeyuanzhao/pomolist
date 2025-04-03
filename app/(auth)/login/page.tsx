@@ -63,7 +63,11 @@ const LoginPage = () => {
           }}
         />
         <div className="flex flex-row justify-between items-center mt-4 w-full">
-          <Button className="bg-p text-white" type="submit">
+          <Button
+            className="bg-p text-white"
+            type="submit"
+            onSubmit={(e) => e.preventDefault()}
+          >
             Log In
           </Button>
           <Button as={Link} className="" href="/signup" variant="light">

@@ -1,14 +1,20 @@
+import { createClient } from "@/utils/supabase/server";
 import { NavLink } from "../NavLink";
 import { AccountDropdown } from "./AccountDropdown";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
-export const SideBar = () => {
+export const SideBar = async () => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <div className="border-r flex flex-col w-64 bg-bgs p-4 justify-between">
       <div>
         <div className="flex flex-col mb-8">
           <h1 className="p-1 mb-2 text-3xl font-bold">Pomolist</h1>
-          <AccountDropdown username={null} />
+          <AccountDropdown username={user?.email} />
         </div>
         <div className="w-full">
           <div className="w-full mb-8">

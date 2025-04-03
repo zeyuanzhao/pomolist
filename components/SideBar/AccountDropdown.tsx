@@ -10,15 +10,18 @@ import {
 } from "@heroui/react";
 import { FaChevronDown } from "react-icons/fa";
 
-export const AccountDropdown = ({ username }: { username: string | null }) => {
+export const AccountDropdown = ({ username }: { username?: string }) => {
   return (
     <Dropdown>
       <DropdownTrigger className="hover:bg-hover rounded-lg p-1">
-        <div className="flex flex-row items-center gap-2 cursor-pointer">
-          <Avatar name="AA" />
-          <p>{username || "Logged Out"}</p>
-          <Spacer x={6} />
-          <FaChevronDown />
+        <div className="flex flex-row items-center gap-2 cursor-pointer justify-between">
+          <div className="flex flex-row items-center gap-2">
+            <Avatar name={username} />
+            <p className="text-ellipsis overflow-hidden max-w-36">
+              {username || "Logged Out"}
+            </p>
+          </div>
+          <FaChevronDown className="mr-1" />
         </div>
       </DropdownTrigger>
       <DropdownMenu>
