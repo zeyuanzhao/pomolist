@@ -1,13 +1,14 @@
 "use client";
 
-import { redirect } from "next/navigation";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const LogoutPage = () => {
+  const router = useRouter();
   useEffect(() => {
     fetch("/auth/logout", {
       method: "POST",
-    }).then(() => redirect("/login"));
+    }).then(() => router.push("/login"));
   });
 
   return (
