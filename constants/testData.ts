@@ -22,16 +22,16 @@ export const tasks: TaskInfo[] = [
 ];
 
 export const pomodoros: PomodoroInfo[] = [
-  // {
-  //   id: "1",
-  //   name: "Pomodoro 1",
-  //   duration: 25,
-  //   tasks: [tasks[0], tasks[1]],
-  // },
-  // {
-  //   id: "2",
-  //   name: "Pomodoro 2",
-  //   duration: 30,
-  //   tasks: [tasks[2]],
-  // },
+  {
+    id: "1",
+    name: "Pomodoro 1",
+    duration: 25,
+    tasks: [],
+  },
+  {
+    id: "2",
+    name: "Pomodoro 2",
+    duration: 30,
+    tasks: [],
+  },
 ];

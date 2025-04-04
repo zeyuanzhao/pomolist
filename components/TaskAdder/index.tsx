@@ -17,7 +17,7 @@ export const TaskAdder = () => {
 
   return (
     <Form
-      className="flex-1 rounded-full border flex flex-row items-center bg-bgs"
+      className="flex-1 rounded-full border flex flex-row items-center bg-bgs shadow-md"
       action={async (formData) => {
         if (!form.name) {
           return;
