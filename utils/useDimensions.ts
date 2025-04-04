@@ -1,3 +1,4 @@
+import { Dimensions } from "@/interfaces";
 import { useMemo, useSyncExternalStore, useRef, RefObject } from "react";
 
 function subscribe(callback: () => void): () => void {
