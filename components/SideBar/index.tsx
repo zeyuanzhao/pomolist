@@ -1,3 +1,5 @@
+"use server";
+
 import { createClient } from "@/utils/supabase/server";
 import { NavLink } from "../NavLink";
 import { AccountDropdown } from "./AccountDropdown";

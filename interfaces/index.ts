@@ -25,12 +25,12 @@ export const signupSchema = z
 
 export const taskSchema = z.object({
   name: z.string().min(1, "Task name is required"),
-  description: z.string().optional(),
+  description: z.string().nullish(),
   duration: z
     .number()
     .min(30, "Duration must be at least 30 seconds")
-    .optional(),
-  dueDate: z.string().datetime({ offset: true }).optional(),
+    .nullish(),
+  dueDate: z.string().datetime({ offset: true }).nullish(),
 });
 
 export interface PomodoroInfo {

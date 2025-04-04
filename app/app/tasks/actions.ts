@@ -1,3 +1,5 @@
+"use server";
+
 import { taskSchema } from "@/interfaces";
 import { createClient } from "@/utils/supabase/server";
 
@@ -17,10 +19,17 @@ export const addTask = async (formData: FormData) => {
     };
   }
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { error: "User not found" };
+
   const { error } = await supabase.from("tasks").insert({
+    user_id: user.id,
     name: data.data.name,
     description: data.data.description,
-    duration: data.data.duration,
+    duration: `${data.data.duration ?? 300} seconds`,
     due_date: data.data.dueDate,
   });
 
@@ -29,5 +38,4 @@ export const addTask = async (formData: FormData) => {
       error: error.message,
     };
   }
-
 };

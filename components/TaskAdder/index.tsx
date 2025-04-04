@@ -25,14 +25,18 @@ export const TaskAdder = () => {
         const res = await addTask(formData);
         if (res?.error) {
           setErrors(res.error);
+          console.log(res.error);
           return;
         }
       }}
       validationErrors={errors}
     >
       <Input
+        isRequired
+        errorMessage=""
         className="flex-1"
         placeholder="Add a new task"
+        name="name"
         radius="full"
         classNames={{
           inputWrapper:

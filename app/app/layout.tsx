@@ -1,3 +1,5 @@
+"use server";
+
 import { SideBar } from "@/components/SideBar";
 import { TaskAdder } from "@/components/TaskAdder";
 import { createClient } from "@/utils/supabase/server";
