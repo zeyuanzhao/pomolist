@@ -22,8 +22,8 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
     <div className="flex flex-row w-screen h-screen text-ts">
       <SideBar />
       {children}
-      <div className="absolute bottom-0 w-full pl-64 flex flex-row mb-6">
-        <div className="flex-1 px-32 flex flex-row">
+      <div className="absolute bottom-0 w-full pl-64 flex flex-row mb-6 invisible">
+        <div className="flex-1 mx-32 flex flex-row visible">
           <TaskAdder />
         </div>
       </div>
