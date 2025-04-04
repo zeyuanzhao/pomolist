@@ -1,6 +1,6 @@
 "use server";
 
-import { loginSchema } from "@/interfaces";
+import { loginFormSchema } from "@/interfaces";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export const login = async (formData: FormData) => {
   const supabase = await createClient();
 
-  const data = loginSchema.safeParse({
+  const data = loginFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
   });

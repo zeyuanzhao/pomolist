@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { NavLink } from "../NavLink";
+import { NavLink } from "./NavLink";
 import { AccountDropdown } from "./AccountDropdown";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 

@@ -1,12 +1,12 @@
 "use server";
 
-import { taskSchema } from "@/interfaces";
+import { taskFormSchema } from "@/interfaces";
 import { createClient } from "@/utils/supabase/server";
 
 export const addTask = async (formData: FormData) => {
   const supabase = await createClient();
 
-  const data = taskSchema.safeParse({
+  const data = taskFormSchema.safeParse({
     name: formData.get("name"),
     description: formData.get("description"),
     duration: formData.get("duration"),
