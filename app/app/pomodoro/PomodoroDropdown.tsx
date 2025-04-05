@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@heroui/react";
+import { number } from "zod";
 
 export const PomodoroDropdown = ({
   pomodoros,
@@ -32,7 +33,7 @@ export const PomodoroDropdown = ({
       <DropdownMenu
         aria-label="Static Actions"
         items={pomodoros || []}
-        onAction={(key) => setCurrentPomodoro(key as number)}
+        onAction={(key) => setCurrentPomodoro(Number(key))}
       >
         {([id, pomo]) => <DropdownItem key={id}>{pomo.name}</DropdownItem>}
       </DropdownMenu>

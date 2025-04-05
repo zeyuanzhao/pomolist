@@ -24,6 +24,7 @@ import {
 import { VscDebugRestart } from "react-icons/vsc";
 import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
 import { secondsToTime } from "@/utils/secondsToTime";
+import { TasksList } from "@/components/TasksList";
 
 const PomodoroPage = () => {
   const {
@@ -97,7 +98,7 @@ const PomodoroPage = () => {
         </div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center">
-        Todo List
+        <TasksList pomodoroId={activeId} />
       </div>
     </div>
   );
