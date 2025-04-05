@@ -24,13 +24,15 @@ export const PomodoroDropdown = ({
     <Dropdown>
       <DropdownTrigger className={triggerClassName}>
         <Button>
-          {pomodoros?.get(currentPomodoro || "")?.name || "Select Pomodoro"}
+          {currentPomodoro
+            ? pomodoros?.get(currentPomodoro)?.name
+            : "Select Pomodoro"}
         </Button>
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Static Actions"
-        items={pomodoros}
-        onAction={(key) => setCurrentPomodoro(key as string)}
+        items={pomodoros || []}
+        onAction={(key) => setCurrentPomodoro(key as number)}
       >
         {([id, pomo]) => <DropdownItem key={id}>{pomo.name}</DropdownItem>}
       </DropdownMenu>

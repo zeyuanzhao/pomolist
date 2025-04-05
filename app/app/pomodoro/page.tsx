@@ -23,10 +23,20 @@ import {
 } from "react-icons/io5";
 import { VscDebugRestart } from "react-icons/vsc";
 import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
+import { secondsToTime } from "@/utils/secondsToTime";
 
 const PomodoroPage = () => {
-  const { pomodoros, activeId, setActiveId } = usePomodoroStore();
-  const [isRunning, setIsRunning] = useState(false);
+  const {
+    pomodoros,
+    activeId,
+    setActiveId,
+    remainingTime,
+    isRunning,
+    start,
+    pause,
+    reset,
+    complete,
+  } = usePomodoroStore();
 
   return (
     <div className="bg-bgp flex flex-col flex-1 text-tp ">
@@ -49,30 +59,38 @@ const PomodoroPage = () => {
         </div>
       </div>
       <div className="h-64 flex flex-col items-center justify-between">
-        <p className="text-[180px] leading-none">32:45</p>
+        <p className="text-[180px] leading-none">
+          {secondsToTime(remainingTime)}
+        </p>
         <div className="w-[400px] h-16 flex flex-row items-center justify-center gap-x-8">
-          <Button
-            isIconOnly
-            className="rounded-lg bg-transparent border-0 text-tp hover:bg-hover/25"
-            onPress={() => {
-              setIsRunning(!isRunning);
-            }}
-          >
-            {isRunning ? (
-              <IoPauseOutline size={"1.5em"} />
-            ) : (
+          {!isRunning ? (
+            <Button
+              isIconOnly
+              className="rounded-lg bg-transparent border-0 text-tp hover:bg-hover/25"
+              onPress={start}
+            >
               <IoPlayOutline size={"1.5em"} />
-            )}
-          </Button>
+            </Button>
+          ) : (
+            <Button
+              isIconOnly
+              className="rounded-lg bg-transparent border-0 text-tp hover:bg-hover/25"
+              onPress={pause}
+            >
+              <IoPauseOutline size={"1.5em"} />
+            </Button>
+          )}
           <Button
             isIconOnly
             className="rounded-lg bg-transparent border-0 text-tp hover:bg-hover/25"
+            onPress={reset}
           >
             <IoReloadOutline size={"1.5em"} />
           </Button>
           <Button
             isIconOnly
             className="rounded-lg bg-transparent border-0 text-tp hover:bg-hover/25"
+            onPress={complete}
           >
             <IoPlaySkipForwardOutline size={"1.5em"} />
           </Button>

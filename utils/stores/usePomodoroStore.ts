@@ -70,7 +70,7 @@ export const usePomodoroStore = create<PomodoroStore>()(
         }
       },
       complete: () => {
-        set({ isRunning: false });
+        set({ isRunning: false, remainingTime: 0 });
         const { intervalId } = get();
         if (intervalId) {
           clearInterval(intervalId);
