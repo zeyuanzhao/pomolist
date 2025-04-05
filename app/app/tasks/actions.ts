@@ -29,8 +29,8 @@ export const addTask = async (formData: FormData) => {
     user_id: user.id,
     name: data.data.name,
     description: data.data.description,
-    duration: `${data.data.duration ?? 300} seconds`,
-    due_date: data.data.dueDate,
+    duration: data.data.duration ? `${data.data.duration} seconds` : undefined,
+    due_date: data.data.dueDate || undefined,
   });
 
   if (error) {
