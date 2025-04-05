@@ -22,14 +22,10 @@ import {
   IoReturnUpBackOutline,
 } from "react-icons/io5";
 import { VscDebugRestart } from "react-icons/vsc";
+import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
 
 const PomodoroPage = () => {
-  const [pomodoros, setPomodoros] = useState(
-    arrayToMap(pomodorosTestData, "id")
-  );
-  const [currentPomodoro, setCurrentPomodoro] = useState(
-    pomodoros.values().next().value.id
-  );
+  const { pomodoros, activeId, setActiveId } = usePomodoroStore();
   const [isRunning, setIsRunning] = useState(false);
 
   return (
@@ -38,8 +34,8 @@ const PomodoroPage = () => {
         <div>
           <PomodoroDropdown
             pomodoros={pomodoros}
-            currentPomodoro={currentPomodoro}
-            setCurrentPomodoro={setCurrentPomodoro}
+            currentPomodoro={activeId}
+            setCurrentPomodoro={setActiveId}
             triggerClassName="bg-bgs/20 text-tp"
           />
         </div>

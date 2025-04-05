@@ -70,7 +70,7 @@ export const pomodoroDbSchema = z.object({
   completed: z.boolean(),
   type: z.string(),
   duration: z.string(),
-  rating: z.number(),
+  rating: z.number().nullish(),
   created_date: z.string().datetime({ offset: true }).nullish(),
   modified_date: z.string().datetime({ offset: true }).nullish(),
 });
@@ -99,13 +99,13 @@ export interface Dimensions {
 export type PomodoroType = "focus" | "shortBreak" | "longBreak";
 
 export type PomodoroListSlice = {
-  pomodoros: Map<string, PomodoroInfo> | null;
-  setPomodoros: (data: Map<string, PomodoroInfo>) => void;
+  pomodoros: Map<number, PomodoroInfo> | null;
+  setPomodoros: (data: Map<number, PomodoroInfo>) => void;
 };
 
 export type ActivePomodoroSlice = {
-  activeId: string | null;
-  setActiveId: (id: string | null) => void;
+  activeId: number | null;
+  setActiveId: (id: number | null) => void;
   isRunning: boolean;
   intervalId: NodeJS.Timeout | null;
   setIntervalId: (id: NodeJS.Timeout | null) => void;

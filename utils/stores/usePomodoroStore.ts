@@ -11,13 +11,13 @@ export const usePomodoroStore = create<PomodoroStore>()(
       activeId: null,
       setActiveId: (id) => {
         set({ activeId: id });
-        const { intervalId } = get();
+        const { intervalId, pomodoros } = get();
         if (intervalId) {
           clearInterval(intervalId);
           set({ intervalId: null });
         }
         set({ isRunning: false });
-        const pomodoro = get().pomodoros?.get(id || "");
+        const pomodoro = id ? pomodoros?.get(id) : null;
         if (!pomodoro) return;
         const duration = postgresIntervalToSeconds(pomodoro.duration);
         set({ remainingTime: duration });
@@ -29,7 +29,7 @@ export const usePomodoroStore = create<PomodoroStore>()(
       setRemainingTime: (remainingTime) => set({ remainingTime }),
       start: () => {
         const { activeId, pomodoros, remainingTime } = get();
-        const pomodoro = pomodoros?.get(activeId || "");
+        const pomodoro = activeId ? pomodoros?.get(activeId) : null;
         if (!pomodoro) return;
         const duration =
           remainingTime || postgresIntervalToSeconds(pomodoro.duration);
@@ -59,7 +59,7 @@ export const usePomodoroStore = create<PomodoroStore>()(
       reset: () => {
         set({ isRunning: false });
         const { activeId, pomodoros } = get();
-        const pomodoro = pomodoros?.get(activeId || "");
+        const pomodoro = activeId ? pomodoros?.get(activeId) : null;
         if (!pomodoro) return;
         const duration = postgresIntervalToSeconds(pomodoro.duration);
         set({ remainingTime: duration });
