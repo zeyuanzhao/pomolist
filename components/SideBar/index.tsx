@@ -1,8 +1,8 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { NavLink } from "./NavLink";
 import { AccountDropdown } from "./AccountDropdown";
+import { NavLink } from "./NavLink";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export const SideBar = async () => {

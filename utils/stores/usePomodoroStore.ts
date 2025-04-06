@@ -1,7 +1,7 @@
 import { PomodoroStore } from "@/interfaces";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { postgresIntervalToSeconds } from "../postgresIntervalToSeconds";
+import { timeStringToSeconds } from "../timeSeconds";
 
 export const usePomodoroStore = create<PomodoroStore>()(
   persist(
@@ -19,7 +19,7 @@ export const usePomodoroStore = create<PomodoroStore>()(
         set({ isRunning: false });
         const pomodoro = id ? pomodoros?.get(id) : null;
         if (!pomodoro) return;
-        const duration = postgresIntervalToSeconds(pomodoro.duration);
+        const duration = timeStringToSeconds(pomodoro.duration);
         set({ remainingTime: duration });
       },
       isRunning: false,
@@ -32,7 +32,7 @@ export const usePomodoroStore = create<PomodoroStore>()(
         const pomodoro = activeId ? pomodoros?.get(activeId) : null;
         if (!pomodoro) return;
         const duration =
-          remainingTime || postgresIntervalToSeconds(pomodoro.duration);
+          remainingTime || timeStringToSeconds(pomodoro.duration);
         set({ isRunning: true, remainingTime: duration });
         const intervalId = setInterval(() => {
           set((state) => {
@@ -61,7 +61,7 @@ export const usePomodoroStore = create<PomodoroStore>()(
         const { activeId, pomodoros } = get();
         const pomodoro = activeId ? pomodoros?.get(activeId) : null;
         if (!pomodoro) return;
-        const duration = postgresIntervalToSeconds(pomodoro.duration);
+        const duration = timeStringToSeconds(pomodoro.duration);
         set({ remainingTime: duration });
         const { intervalId } = get();
         if (intervalId) {

@@ -8,7 +8,6 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@heroui/react";
-import { number } from "zod";
 
 export const PomodoroDropdown = ({
   pomodoros,

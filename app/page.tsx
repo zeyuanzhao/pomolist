@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from "@heroui/button";
+import { Button } from "@heroui/button";
 import Link from "next/link";
 
 export default function Home() {

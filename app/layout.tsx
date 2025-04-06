@@ -1,7 +1,7 @@
+import { VercelToolbar } from "@vercel/toolbar/next";
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
-import { VercelToolbar } from "@vercel/toolbar/next";
 
 export const metadata: Metadata = {
   title: "Pomolist",

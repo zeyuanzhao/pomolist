@@ -6,7 +6,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Spacer,
 } from "@heroui/react";
 import { IoChevronDown } from "react-icons/io5";
 

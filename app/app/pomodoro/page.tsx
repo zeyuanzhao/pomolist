@@ -1,30 +1,17 @@
 "use client";
 
-import { PomodoroInfo } from "@/interfaces";
+import { TasksList } from "@/components/TasksList";
+import { secondsToTimeSimple } from "@/utils/timeSeconds";
+import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
+import { Button } from "@heroui/react";
 import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@heroui/react";
-import { LuMaximize2 } from "react-icons/lu";
-import { PomodoroDropdown } from "./PomodoroDropdown";
-import { useState } from "react";
-import { pomodoros as pomodorosTestData } from "@/constants/testData";
-import { arrayToMap } from "@/utils/arrayToMap";
-import {
-  IoArrowBackOutline,
   IoPauseOutline,
   IoPlayOutline,
   IoPlaySkipForwardOutline,
   IoReloadOutline,
-  IoReturnUpBackOutline,
 } from "react-icons/io5";
-import { VscDebugRestart } from "react-icons/vsc";
-import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
-import { secondsToTime } from "@/utils/secondsToTime";
-import { TasksList } from "@/components/TasksList";
+import { LuMaximize2 } from "react-icons/lu";
+import { PomodoroDropdown } from "./PomodoroDropdown";
 
 const PomodoroPage = () => {
   const {
@@ -61,7 +48,7 @@ const PomodoroPage = () => {
       </div>
       <div className="h-64 flex flex-col items-center justify-between">
         <p className="text-[180px] leading-none">
-          {secondsToTime(remainingTime)}
+          {secondsToTimeSimple(remainingTime)}
         </p>
         <div className="w-[400px] h-16 flex flex-row items-center justify-center gap-x-8">
           {!isRunning ? (
@@ -98,8 +85,8 @@ const PomodoroPage = () => {
         </div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center">
-        <div className="max-w-lg w-full">
-          <TasksList pomodoroId={activeId} />
+        <div className="max-w-lg w-full max-h-80 mb-32 overflow-y-auto">
+          {activeId && <TasksList pomodoroId={activeId} />}
         </div>
       </div>
     </div>

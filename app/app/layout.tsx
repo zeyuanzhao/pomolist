@@ -2,13 +2,11 @@
 
 import { SideBar } from "@/components/SideBar";
 import { TaskAdder } from "@/components/TaskAdder";
-import { arrayToMap } from "@/utils/arrayToMap";
-import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
+import { pomodoroSchema } from "@/interfaces";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { SetPomodoroStore } from "./SetPomodoroStore";
-import { pomodoroSchema } from "@/interfaces";
 
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
   const pathname = (await headers()).get("x-next-pathname");

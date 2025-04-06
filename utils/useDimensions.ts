@@ -1,5 +1,5 @@
 import { Dimensions } from "@/interfaces";
-import { useMemo, useSyncExternalStore, useRef, RefObject } from "react";
+import { RefObject, useMemo, useSyncExternalStore } from "react";
 
 function subscribe(callback: () => void): () => void {
   window.addEventListener("resize", callback);
