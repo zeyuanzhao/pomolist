@@ -67,7 +67,7 @@ export const TasksList = ({
   }, [pomodoroId]);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col">
       {tasks?.map((task) => (
         <TaskRow task={task} key={task.id} />
       ))}

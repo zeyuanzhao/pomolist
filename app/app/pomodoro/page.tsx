@@ -40,7 +40,7 @@ const PomodoroPage = () => {
   } = usePomodoroStore();
 
   return (
-    <div className="bg-bgp flex flex-col flex-1 text-tp ">
+    <div className="bg-bgp flex flex-col flex-1 text-tp">
       <div className="h-16 px-4 flex flex-row items-center justify-between">
         <div>
           <PomodoroDropdown
@@ -98,7 +98,9 @@ const PomodoroPage = () => {
         </div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center">
-        <TasksList pomodoroId={activeId} />
+        <div className="max-w-lg w-full">
+          <TasksList pomodoroId={activeId} />
+        </div>
       </div>
     </div>
   );
