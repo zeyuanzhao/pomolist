@@ -4,6 +4,7 @@ import { TaskInfo } from "@/interfaces";
 import { createClient } from "@/utils/supabase/client";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
+import { TaskRow } from "./TaskRow";
 
 export const TasksList = ({
   initialTasks,
@@ -66,11 +67,9 @@ export const TasksList = ({
   }, [pomodoroId]);
 
   return (
-    <div>
+    <div className="w-full h-full">
       {tasks?.map((task) => (
-        <div key={task.id} className="flex flex-row items-center">
-          <p>{task.name}</p>
-        </div>
+        <TaskRow task={task} key={task.id} />
       ))}
     </div>
   );
