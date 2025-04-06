@@ -23,6 +23,13 @@ export const signupFormSchema = z
     }
   });
 
+export interface TaskForm {
+  name: string;
+  description?: string | null;
+  duration?: number | null;
+  dueDate?: string | null;
+}
+
 export const taskFormSchema = z.object({
   name: z.string().min(1, "Task name is required"),
   description: z.string().nullish(),
@@ -30,7 +37,7 @@ export const taskFormSchema = z.object({
     .number()
     .min(30, "Duration must be at least 30 seconds")
     .nullish(),
-  dueDate: z.string().datetime({ offset: true }).nullish(),
+  dueDate: z.string().date().nullish(),
 });
 
 export const taskDbSchema = z.object({

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroui/react": "^2.7.5",
+    "@internationalized/date": "^3.7.0",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
     "@vercel/toolbar": "^0.1.32",
