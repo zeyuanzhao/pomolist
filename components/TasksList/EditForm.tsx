@@ -1,4 +1,4 @@
-import { editTask } from "@/app/app/tasks/actions";
+import { deleteTask, editTask } from "@/app/app/tasks/actions";
 import { TaskInfo } from "@/interfaces";
 import { secondsToTimeString, timeStringToSeconds } from "@/utils/timeSeconds";
 import {
@@ -20,7 +20,7 @@ import {
   today,
 } from "@internationalized/date";
 import { useState } from "react";
-import { IoAdd } from "react-icons/io5";
+import { IoAdd, IoTrashOutline } from "react-icons/io5";
 
 export const EditForm = ({ task }: { task: TaskInfo }) => {
   const [form, setForm] = useState({
@@ -108,13 +108,23 @@ export const EditForm = ({ task }: { task: TaskInfo }) => {
           name="dueDate"
         />
       </Tooltip>
-      <Button
-        className="brightness-[93%] bg-bgs hover:bg-hover hover:brightness-[85%]"
-        type="submit"
-        onSubmit={(e) => e.preventDefault()}
-      >
-        Edit
-      </Button>
+      <div className="w-full flex flex-row justify-between items-center">
+        <Button
+          className="bg-bgs hover:bg-hover hover:brightness-[85%]"
+          type="submit"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          Edit
+        </Button>
+        <Button
+          className="bg-bgs hover:bg-hover hover:brightness-[85%]"
+          type="button"
+          isIconOnly
+          onPress={() => deleteTask(task.id)}
+        >
+          <IoTrashOutline />
+        </Button>
+      </div>
     </Form>
   );
 };

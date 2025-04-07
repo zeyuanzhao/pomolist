@@ -95,3 +95,24 @@ export const editTask = async (
     };
   }
 };
+
+export const deleteTask = async (taskId: number) => {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "User not found" };
+
+  const { error } = await supabase
+    .from("tasks")
+    .delete()
+    .eq("id", taskId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return {
+      error: error.message,
+    };
+  }
+};
