@@ -23,15 +23,46 @@ export const signupFormSchema = z
     }
   });
 
-export const taskFormSchema = z.object({
+export const addTaskFormSchema = z.object({
   name: z.string().min(1, "Task name is required"),
   description: z.string().nullish(),
   duration: z
     .number()
     .min(30, "Duration must be at least 30 seconds")
-    .nullish(),
-  dueDate: z.string().datetime({ offset: true }).nullish(),
+    .optional(),
+  dueDate: z.string().date().nullish(),
 });
+
+export const editTaskFormSchema = z.object({
+  name: z.string().min(1, "Task name is required").optional(),
+  description: z.string().nullish(),
+  duration: z
+    .number()
+    .min(30, "Duration must be at least 30 seconds")
+    .optional(),
+  dueDate: z.string().date().nullish(),
+  completed: z.boolean().optional(),
+  pomodoroId: z.number().nullish(),
+});
+
+// export interface AddTaskForm {
+//   name: string;
+//   description?: string | null;
+//   duration?: number | null;
+//   dueDate?: string | null;
+// }
+
+// export interface EditTaskForm {
+//   name?: string;
+//   description?: string | null;
+//   duration?: number | null;
+//   dueDate?: string | null;
+//   completed?: boolean;
+//   pomodoroId?: number | null;
+// }
+
+export type AddTaskForm = z.infer<typeof addTaskFormSchema>;
+export type EditTaskForm = z.infer<typeof editTaskFormSchema>;
 
 export const taskDbSchema = z.object({
   id: z.number(),
@@ -43,6 +74,7 @@ export const taskDbSchema = z.object({
   due_date: z.string().datetime({ offset: true }).nullish(),
   created_date: z.string().datetime({ offset: true }).nullish(),
   modified_date: z.string().datetime({ offset: true }).nullish(),
+  pomodoro_id: z.number().nullish(),
 });
 
 export const taskSchema = taskDbSchema.transform((task) => ({
@@ -55,31 +87,65 @@ export const taskSchema = taskDbSchema.transform((task) => ({
   dueDate: task.due_date,
   createdDate: task.created_date,
   modifiedDate: task.modified_date,
+  pomodoroId: task.pomodoro_id,
 }));
 
 export type TaskInfo = z.infer<typeof taskSchema>;
 
-export interface PomodoroInfo {
-  id: string;
-  name: string;
-  duration: number;
-  tasks: TaskInfo[];
-}
+export const pomodoroDbSchema = z.object({
+  id: z.number(),
+  user_id: z.string(),
+  order_index: z.number(),
+  name: z.string(),
+  description: z.string().nullish(),
+  completed: z.boolean(),
+  type: z.string(),
+  duration: z.string(),
+  rating: z.number().nullish(),
+  created_date: z.string().datetime({ offset: true }).nullish(),
+  modified_date: z.string().datetime({ offset: true }).nullish(),
+});
 
-// export interface TaskInfo {
-//   id: number;
-//   userId: string;
-//   name: string;
-//   description?: string;
-//   completed: boolean;
-//   duration: number;
-//   dueDate?: string;
-//   createdDate?: string;
-//   modifiedDate?: string;
-//   pomodoroId?: string;
-// }
+export const pomodoroSchema = pomodoroDbSchema.transform((pomodoro) => ({
+  id: pomodoro.id,
+  userId: pomodoro.user_id,
+  orderIndex: pomodoro.order_index,
+  name: pomodoro.name,
+  description: pomodoro.description,
+  completed: pomodoro.completed,
+  type: pomodoro.type,
+  duration: pomodoro.duration,
+  rating: pomodoro.rating,
+  createdDate: pomodoro.created_date,
+  modifiedDate: pomodoro.modified_date,
+}));
+
+export type PomodoroInfo = z.infer<typeof pomodoroSchema>;
 
 export interface Dimensions {
   width: number;
   height: number;
 }
+
+export type PomodoroType = "focus" | "shortBreak" | "longBreak";
+
+export type PomodoroListSlice = {
+  pomodoros: Map<number, PomodoroInfo> | null;
+  setPomodoros: (data: Map<number, PomodoroInfo>) => void;
+};
+
+export type ActivePomodoroSlice = {
+  activeId: number | null;
+  setActiveId: (id: number | null) => void;
+  isRunning: boolean;
+  intervalId: NodeJS.Timeout | null;
+  setIntervalId: (id: NodeJS.Timeout | null) => void;
+  remainingTime: number | null;
+  setRemainingTime: (remainingTime: number) => void;
+  start: () => void;
+  pause: () => void;
+  reset: () => void;
+  complete: () => void;
+};
+
+export type PomodoroStore = PomodoroListSlice & ActivePomodoroSlice;

@@ -1,6 +1,5 @@
-"use client";
-
-import { addTask } from "@/app/app/tasks/actions";
+import { deleteTask, editTask } from "@/app/app/tasks/actions";
+import { TaskInfo } from "@/interfaces";
 import { secondsToTimeString, timeStringToSeconds } from "@/utils/timeSeconds";
 import {
   Button,
@@ -12,31 +11,38 @@ import {
 } from "@heroui/react";
 import {
   getLocalTimeZone,
+  parseAbsolute,
   parseDate,
+  parseDateTime,
   parseTime,
+  parseZonedDateTime,
+  toCalendarDate,
   today,
 } from "@internationalized/date";
 import { useState } from "react";
-import { IoAdd } from "react-icons/io5";
+import { IoAdd, IoTrashOutline } from "react-icons/io5";
 
-export const TaskAdder = () => {
+export const EditForm = ({ task }: { task: TaskInfo }) => {
   const [form, setForm] = useState({
-    name: "",
-    description: "",
-    duration: 1500,
-    dueDate: undefined as string | undefined,
+    name: task.name || "",
+    description: task.description || "",
+    duration: timeStringToSeconds(task.duration) || 1500,
+    dueDate: task.dueDate
+      ? toCalendarDate(
+          parseAbsolute(task.dueDate, getLocalTimeZone())
+        ).toString()
+      : (undefined as string | undefined),
   });
 
   const [errors, setErrors] = useState({});
-
   return (
     <Form
-      className="flex-1 rounded-full border flex flex-row items-center bg-bgs shadow-md overflow-hidden"
+      className="flex-1 flex flex-col"
       action={async (formData) => {
         if (!form.name) {
           return;
         }
-        const res = await addTask(form);
+        const res = await editTask(task.id, form);
         if (res?.error) {
           setErrors(res.error);
           console.log(res.error);
@@ -49,13 +55,10 @@ export const TaskAdder = () => {
         isRequired
         errorMessage=""
         className="flex-1"
-        placeholder="Add a new task"
+        placeholder="Edit task name"
         name="name"
         value={form.name}
-        classNames={{
-          inputWrapper:
-            "bg-transparent shadow-none hover:bg-transparent focus-within:bg-transparent",
-        }}
+        classNames={{}}
         onChange={(e) => setForm({ ...form, name: e.target.value })}
       />
       <Input
@@ -83,7 +86,6 @@ export const TaskAdder = () => {
             }
           }}
           hourCycle={24}
-          className="w-min"
           granularity="second"
           aria-label="Duration"
           name="duration"
@@ -91,7 +93,6 @@ export const TaskAdder = () => {
       </Tooltip>
       <Tooltip content="Due Date">
         <DatePicker
-          className="w-min"
           showMonthAndYearPickers
           isDateUnavailable={(date) =>
             date.compare(today(getLocalTimeZone())) < 0
@@ -107,14 +108,23 @@ export const TaskAdder = () => {
           name="dueDate"
         />
       </Tooltip>
-      <Button
-        isIconOnly
-        className="rounded-full brightness-[93%] bg-bgs hover:bg-hover hover:brightness-[85%]"
-        type="submit"
-        onSubmit={(e) => e.preventDefault()}
-      >
-        <IoAdd />
-      </Button>
+      <div className="w-full flex flex-row justify-between items-center">
+        <Button
+          className="bg-bgs hover:bg-hover hover:brightness-[85%]"
+          type="submit"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          Edit
+        </Button>
+        <Button
+          className="bg-bgs hover:bg-hover hover:brightness-[85%]"
+          type="button"
+          isIconOnly
+          onPress={() => deleteTask(task.id)}
+        >
+          <IoTrashOutline />
+        </Button>
+      </div>
     </Form>
   );
 };

@@ -15,20 +15,24 @@ export const PomodoroDropdown = ({
   setCurrentPomodoro,
   triggerClassName,
 }: {
-  pomodoros: Map<string, PomodoroInfo>;
-  currentPomodoro: string;
-  setCurrentPomodoro: (pomo: string) => void;
+  pomodoros?: Map<number, PomodoroInfo> | null;
+  currentPomodoro?: number | null;
+  setCurrentPomodoro: (pomo: number) => void;
   triggerClassName?: string;
 }) => {
   return (
     <Dropdown>
       <DropdownTrigger className={triggerClassName}>
-        <Button>{pomodoros.get(currentPomodoro)?.name}</Button>
+        <Button>
+          {currentPomodoro
+            ? pomodoros?.get(currentPomodoro)?.name
+            : "Select Pomodoro"}
+        </Button>
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Static Actions"
-        items={pomodoros}
-        onAction={(key) => setCurrentPomodoro(key as string)}
+        items={pomodoros || []}
+        onAction={(key) => setCurrentPomodoro(Number(key))}
       >
         {([id, pomo]) => <DropdownItem key={id}>{pomo.name}</DropdownItem>}
       </DropdownMenu>

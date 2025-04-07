@@ -1,6 +1,6 @@
 "use server";
 
-import { loginFormSchema, signupFormSchema } from "@/interfaces";
+import { signupFormSchema } from "@/interfaces";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";

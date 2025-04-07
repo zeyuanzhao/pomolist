@@ -1,4 +1,6 @@
-import { Link } from "@heroui/react";
+"use server";
+
+import { Link } from "@heroui/link";
 
 const VerifyPage = () => {
   return (
