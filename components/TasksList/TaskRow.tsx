@@ -1,8 +1,16 @@
 import { TaskInfo } from "@/interfaces";
 import { timeSimple } from "@/utils/timeSeconds";
-import { Button, Checkbox } from "@heroui/react";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@heroui/react";
 import { useState } from "react";
 import { IoPencil } from "react-icons/io5";
+import { EditForm } from "./EditForm";
 
 export const TaskRow = ({ task }: { task: TaskInfo }) => {
   const [hover, setHover] = useState(false);
@@ -29,16 +37,34 @@ export const TaskRow = ({ task }: { task: TaskInfo }) => {
           </p>
         </div>
         <div className="flex flex-row items-center gap-x-2">
-          {hover && (
-            <div
-              className="hover:bg-hover/50 p-0.5 rounded-lg"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <IoPencil size="20px" />
-            </div>
-          )}
+          <Popover
+            showArrow
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <PopoverTrigger>
+              <div
+                className={
+                  "hover:bg-hover/60 p-0.5 rounded-lg " +
+                  (hover ? "visible" : "invisible")
+                }
+              >
+                <IoPencil size="18px" />
+              </div>
+            </PopoverTrigger>
+            <PopoverContent>
+              {(titleProps) => (
+                <div className="p-2">
+                  <p {...titleProps} className="text-small font-bold mb-2">
+                    Edit Task
+                  </p>
+                  <EditForm task={task} />
+                </div>
+              )}
+            </PopoverContent>
+          </Popover>
+
           <p>{timeSimple(task.duration)}</p>
         </div>
       </div>

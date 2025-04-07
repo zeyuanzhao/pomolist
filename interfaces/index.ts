@@ -23,22 +23,46 @@ export const signupFormSchema = z
     }
   });
 
-export interface TaskForm {
-  name: string;
-  description?: string | null;
-  duration?: number | null;
-  dueDate?: string | null;
-}
-
-export const taskFormSchema = z.object({
+export const addTaskFormSchema = z.object({
   name: z.string().min(1, "Task name is required"),
   description: z.string().nullish(),
   duration: z
     .number()
     .min(30, "Duration must be at least 30 seconds")
-    .nullish(),
+    .optional(),
   dueDate: z.string().date().nullish(),
 });
+
+export const editTaskFormSchema = z.object({
+  name: z.string().min(1, "Task name is required").optional(),
+  description: z.string().nullish(),
+  duration: z
+    .number()
+    .min(30, "Duration must be at least 30 seconds")
+    .optional(),
+  dueDate: z.string().date().nullish(),
+  completed: z.boolean().optional(),
+  pomodoroId: z.number().nullish(),
+});
+
+// export interface AddTaskForm {
+//   name: string;
+//   description?: string | null;
+//   duration?: number | null;
+//   dueDate?: string | null;
+// }
+
+// export interface EditTaskForm {
+//   name?: string;
+//   description?: string | null;
+//   duration?: number | null;
+//   dueDate?: string | null;
+//   completed?: boolean;
+//   pomodoroId?: number | null;
+// }
+
+export type AddTaskForm = z.infer<typeof addTaskFormSchema>;
+export type EditTaskForm = z.infer<typeof editTaskFormSchema>;
 
 export const taskDbSchema = z.object({
   id: z.number(),

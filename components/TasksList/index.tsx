@@ -1,6 +1,6 @@
 "use client";
 
-import { TaskInfo } from "@/interfaces";
+import { TaskInfo, taskSchema } from "@/interfaces";
 import { createClient } from "@/utils/supabase/client";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
@@ -34,7 +34,10 @@ export const TasksList = ({
             filter: pomodoroId ? `pomodoro_id=eq.${pomodoroId}` : undefined,
           },
           (payload) => {
-            setTasks((prevTasks) => [...prevTasks, payload.new as TaskInfo]);
+            setTasks((prevTasks) => [
+              ...prevTasks,
+              taskSchema.parse(payload.new),
+            ]);
           }
         )
         .subscribe()
@@ -60,7 +63,7 @@ export const TasksList = ({
       if (error) {
         console.error("Error fetching tasks:", error);
       } else {
-        setTasks(data as TaskInfo[]);
+        setTasks(data.map((task) => taskSchema.parse(task)));
       }
     };
     fetchTasks();

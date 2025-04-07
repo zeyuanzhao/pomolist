@@ -3,7 +3,7 @@
 import { TasksList } from "@/components/TasksList";
 import { secondsToTimeSimple } from "@/utils/timeSeconds";
 import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
-import { Button } from "@heroui/react";
+import { Button, ScrollShadow } from "@heroui/react";
 import {
   IoPauseOutline,
   IoPlayOutline,
@@ -85,9 +85,9 @@ const PomodoroPage = () => {
         </div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center">
-        <div className="max-w-lg w-full max-h-80 mb-32 overflow-y-auto">
+        <ScrollShadow className="max-w-lg w-full max-h-80 mb-32">
           {activeId && <TasksList pomodoroId={activeId} />}
-        </div>
+        </ScrollShadow>
       </div>
     </div>
   );
