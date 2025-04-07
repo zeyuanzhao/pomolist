@@ -40,6 +40,38 @@ export const TasksList = ({
             ]);
           }
         )
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "tasks",
+            filter: pomodoroId ? `pomodoro_id=eq.${pomodoroId}` : undefined,
+          },
+          (payload) => {
+            setTasks((prevTasks) =>
+              prevTasks.map((task) =>
+                task.id === payload.new.id
+                  ? taskSchema.parse(payload.new)
+                  : task
+              )
+            );
+          }
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "DELETE",
+            schema: "public",
+            table: "tasks",
+            filter: pomodoroId ? `pomodoro_id=eq.${pomodoroId}` : undefined,
+          },
+          (payload) => {
+            setTasks((prevTasks) =>
+              prevTasks.filter((task) => task.id !== payload.old.id)
+            );
+          }
+        )
         .subscribe()
     );
 
