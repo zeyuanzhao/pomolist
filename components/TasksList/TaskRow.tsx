@@ -11,9 +11,10 @@ import {
 import { useEffect, useState } from "react";
 import { IoPencil } from "react-icons/io5";
 import { EditForm } from "./EditForm";
-import { editTask } from "@/app/app/tasks/actions";
+import { useTaskStore } from "@/utils/stores/useTaskStore";
 
 export const TaskRow = ({ task }: { task: TaskInfo }) => {
+  const { editTask } = useTaskStore();
   const [hover, setHover] = useState(false);
 
   const toggleCompleted = () => {

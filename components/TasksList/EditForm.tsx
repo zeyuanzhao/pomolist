@@ -1,5 +1,5 @@
-import { deleteTask, editTask } from "@/app/app/tasks/actions";
 import { TaskInfo } from "@/interfaces";
+import { useTaskStore } from "@/utils/stores/useTaskStore";
 import { secondsToTimeString, timeStringToSeconds } from "@/utils/timeSeconds";
 import {
   Button,
@@ -23,6 +23,7 @@ import { useState } from "react";
 import { IoAdd, IoTrashOutline } from "react-icons/io5";
 
 export const EditForm = ({ task }: { task: TaskInfo }) => {
+  const { editTask, deleteTask } = useTaskStore();
   const [form, setForm] = useState({
     name: task.name || "",
     description: task.description || "",

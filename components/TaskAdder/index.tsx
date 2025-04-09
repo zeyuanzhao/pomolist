@@ -1,6 +1,6 @@
 "use client";
 
-import { addTask } from "@/app/app/tasks/actions";
+import { useTaskStore } from "@/utils/stores/useTaskStore";
 import { secondsToTimeString, timeStringToSeconds } from "@/utils/timeSeconds";
 import {
   Button,
@@ -20,6 +20,7 @@ import { useState } from "react";
 import { IoAdd } from "react-icons/io5";
 
 export const TaskAdder = () => {
+  const { addTask } = useTaskStore();
   const [form, setForm] = useState({
     name: "",
     description: "",

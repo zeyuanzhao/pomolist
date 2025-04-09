@@ -6,17 +6,17 @@ import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
 import { useEffect } from "react";
 
 export const SetPomodoroStore = ({
-  pomodoros,
+  initialPomodoros,
 }: {
-  pomodoros: PomodoroInfo[];
+  initialPomodoros: PomodoroInfo[];
 }) => {
   const { setPomodoros, setActiveId, remainingTime, isRunning } =
     usePomodoroStore();
 
   useEffect(() => {
     const fetchPomodoros = async () => {
-      setPomodoros(arrayToMap(pomodoros, "id"));
-      setActiveId(pomodoros[0]?.id || null);
+      setPomodoros(arrayToMap(initialPomodoros, "id"));
+      setActiveId(initialPomodoros[0]?.id || null);
     };
 
     fetchPomodoros();

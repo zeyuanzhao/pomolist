@@ -16,15 +16,6 @@ const TodayPage = async () => {
     return <UserError />;
   }
 
-  let { data: initialTasks } = await supabase
-    ?.from("tasks")
-    .select("*")
-    .filter("due_date", "eq", new Date().toISOString().split("T")[0]);
-
-  if (initialTasks) {
-    initialTasks = initialTasks?.map((task) => taskSchema.parse(task));
-  }
-
   return (
     <div className="flex-1 flex flex-row justify-center">
       <div className="flex-1 max-w-4xl pt-16 flex flex-col">
@@ -33,7 +24,7 @@ const TodayPage = async () => {
         </div>
         <div className="flex-1 flex flex-row gap-x-2">
           <div className="flex-1">
-            <TasksList initialTasks={initialTasks} />
+            <TasksList />
           </div>
           <div className="flex-1">
             <PomodoroList />

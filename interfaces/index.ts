@@ -129,12 +129,12 @@ export interface Dimensions {
 
 export type PomodoroType = "focus" | "shortBreak" | "longBreak";
 
-export type PomodoroListSlice = {
+export interface PomodoroListSlice {
   pomodoros: Map<number, PomodoroInfo> | null;
   setPomodoros: (data: Map<number, PomodoroInfo>) => void;
-};
+}
 
-export type ActivePomodoroSlice = {
+export interface ActivePomodoroSlice {
   activeId: number | null;
   setActiveId: (id: number | null) => void;
   isRunning: boolean;
@@ -146,6 +146,14 @@ export type ActivePomodoroSlice = {
   pause: () => void;
   reset: () => void;
   complete: () => void;
-};
+}
 
 export type PomodoroStore = PomodoroListSlice & ActivePomodoroSlice;
+
+export interface TaskStore {
+  tasks: Map<number, TaskInfo> | null;
+  setTasks: (data: Map<number, TaskInfo>) => void;
+  addTask: (task: AddTaskForm) => Promise<any>;
+  editTask: (taskId: number, task: EditTaskForm) => Promise<any>;
+  deleteTask: (taskId: number) => Promise<any>;
+}
