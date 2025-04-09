@@ -7,7 +7,7 @@ export const PomodoroList = () => {
   const { pomodoros, activeId } = usePomodoroStore();
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col gap-y-4">
       {pomodoros &&
         Array.from(pomodoros).map(([id, pomodoro]) => {
           return <PomodoroCard key={id} pomodoro={pomodoro} />;
