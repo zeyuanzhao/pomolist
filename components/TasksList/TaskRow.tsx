@@ -36,7 +36,7 @@ export const TaskRow = ({ task }: { task: TaskInfo }) => {
     >
       <div
         key={task.id}
-        className="flex flex-row items-center py-2 rounded-lg justify-between px-2"
+        className="flex flex-row items-center p-2 rounded-lg justify-between"
       >
         <div className="flex flex-row">
           <Checkbox
