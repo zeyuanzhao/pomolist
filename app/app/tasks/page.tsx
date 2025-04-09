@@ -23,7 +23,7 @@ const TasksPage = async () => {
 
   return (
     <div className="flex-1 flex flex-row justify-center">
-      <div className="flex-1 max-w-4xl pt-16">
+      <div className="flex-1 max-w-4xl pt-16 flex flex-col">
         <div>
           <h1 className="text-3xl font-bold">Tasks</h1>
         </div>

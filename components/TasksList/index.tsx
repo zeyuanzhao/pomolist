@@ -83,7 +83,10 @@ export const TasksList = ({
   }, [pomodoroId]);
 
   useEffect(() => {
-    if (mounted && tasks) setMounted(true);
+    if (!mounted && tasks) {
+      setMounted(true);
+      return;
+    }
     const fetchTasks = async () => {
       const query = supabase.from("tasks").select("*");
 
