@@ -1,5 +1,6 @@
 "use client";
 
+import { AddTaskForm } from "@/interfaces";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
 import { secondsToTimeString, timeStringToSeconds } from "@/utils/timeSeconds";
 import {
@@ -21,10 +22,10 @@ import { IoAdd } from "react-icons/io5";
 
 export const TaskAdder = () => {
   const { addTask } = useTaskStore();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<AddTaskForm>({
     name: "",
     description: "",
-    duration: 1500,
+    duration: 300,
     dueDate: undefined as string | undefined,
   });
 
@@ -48,6 +49,7 @@ export const TaskAdder = () => {
     >
       <Input
         isRequired
+        isInvalid={false}
         errorMessage=""
         className="flex-1"
         placeholder="Add a new task"
@@ -61,10 +63,11 @@ export const TaskAdder = () => {
       />
       <Input
         errorMessage=""
+        isInvalid={false}
         className="hidden"
         placeholder="Description"
         name="description"
-        value={form.description}
+        value={form.description || ""}
         classNames={{
           inputWrapper:
             "bg-transparent shadow-none hover:bg-transparent focus-within:bg-transparent",
@@ -73,7 +76,8 @@ export const TaskAdder = () => {
       />
       <Tooltip content="Duration">
         <TimeInput
-          value={parseTime(secondsToTimeString(form.duration))}
+          isInvalid={false}
+          value={parseTime(secondsToTimeString(form.duration || 0))}
           onChange={(time) => {
             if (time) {
               const timeString = time.toString();
@@ -93,6 +97,7 @@ export const TaskAdder = () => {
       <Tooltip content="Due Date">
         <DatePicker
           className="w-min"
+          isInvalid={false}
           showMonthAndYearPickers
           isDateUnavailable={(date) =>
             date.compare(today(getLocalTimeZone())) < 0

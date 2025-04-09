@@ -45,24 +45,18 @@ export const editTaskFormSchema = z.object({
   pomodoroId: z.number().nullish(),
 });
 
-// export interface AddTaskForm {
-//   name: string;
-//   description?: string | null;
-//   duration?: number | null;
-//   dueDate?: string | null;
-// }
-
-// export interface EditTaskForm {
-//   name?: string;
-//   description?: string | null;
-//   duration?: number | null;
-//   dueDate?: string | null;
-//   completed?: boolean;
-//   pomodoroId?: number | null;
-// }
+export const addPomodoroFormSchema = z.object({
+  name: z.string().min(1, "Pomodoro name is required"),
+  duration: z
+    .number()
+    .min(30, "Duration must be at least 30 seconds")
+    .optional(),
+  type: z.enum(["focus", "shortBreak", "longBreak"]),
+});
 
 export type AddTaskForm = z.infer<typeof addTaskFormSchema>;
 export type EditTaskForm = z.infer<typeof editTaskFormSchema>;
+export type AddPomodoroForm = z.infer<typeof addPomodoroFormSchema>;
 
 export const taskDbSchema = z.object({
   id: z.number(),

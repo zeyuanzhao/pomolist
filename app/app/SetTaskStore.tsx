@@ -40,7 +40,9 @@ export const SetTaskStore = ({
           },
           (payload) => {
             const task = taskSchema.parse(payload.new);
-            setTasks(new Map(tasks).set(task.id, task));
+            const newTasks = new Map(tasks);
+            newTasks.set(task.id, task);
+            setTasks(newTasks);
           }
         )
         .on(
@@ -52,7 +54,9 @@ export const SetTaskStore = ({
           },
           (payload) => {
             const task = taskSchema.parse(payload.new);
-            setTasks(new Map(tasks).set(task.id, task));
+            const newTasks = new Map(tasks);
+            newTasks.set(task.id, task);
+            setTasks(newTasks);
           }
         )
         .on(

@@ -12,6 +12,7 @@ export const PomodoroList = () => {
         Array.from(pomodoros).map(([id, pomodoro]) => {
           return <PomodoroCard key={id} pomodoro={pomodoro} />;
         })}
+      <PomodoroCard />
     </div>
   );
 };
