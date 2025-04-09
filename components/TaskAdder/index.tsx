@@ -41,7 +41,6 @@ export const TaskAdder = () => {
         const res = await addTask(form);
         if (res?.error) {
           setErrors(res.error);
-          console.log(res.error);
           return;
         }
       }}

@@ -89,7 +89,7 @@ export type TaskInfo = z.infer<typeof taskSchema>;
 export const pomodoroDbSchema = z.object({
   id: z.number(),
   user_id: z.string(),
-  order_index: z.number(),
+  order_index: z.number().nullish(),
   name: z.string(),
   description: z.string().nullish(),
   completed: z.boolean(),
