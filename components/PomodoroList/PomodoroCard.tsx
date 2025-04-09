@@ -19,7 +19,7 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro: PomodoroInfo }) => {
       </CardHeader>
       <Divider />
       <CardBody>
-        <TasksList />
+        <TasksList pomodoroId={pomodoro.id} />
       </CardBody>
     </Card>
   );

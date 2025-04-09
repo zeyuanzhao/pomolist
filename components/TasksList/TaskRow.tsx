@@ -53,6 +53,12 @@ export const TaskRow = ({ task }: { task: TaskInfo }) => {
             onClick={(e) => {
               e.stopPropagation();
             }}
+            onMouseEnter={(e) => {
+              e.stopPropagation();
+            }}
+            onMouseLeave={(e) => {
+              e.stopPropagation();
+            }}
           >
             <PopoverTrigger>
               <div
