@@ -17,11 +17,7 @@ export const SetTaskStore = ({
   const [channel, setChannel] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      setTasks(arrayToMap(initialTasks, "id"));
-    };
-
-    fetchTasks();
+    setTasks(arrayToMap(initialTasks, "id"));
   }, []);
 
   useEffect(() => {
@@ -39,6 +35,7 @@ export const SetTaskStore = ({
             table: "tasks",
           },
           (payload) => {
+            debugger;
             const task = taskSchema.parse(payload.new);
             const newTasks = new Map(tasks);
             newTasks.set(task.id, task);
@@ -81,7 +78,7 @@ export const SetTaskStore = ({
         supabase.removeChannel(channel);
       }
     };
-  }, []);
+  }, [tasks]);
 
   return null;
 };
