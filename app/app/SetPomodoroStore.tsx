@@ -17,7 +17,8 @@ export const SetPomodoroStore = ({
   const {
     setPomodoros,
     setActiveId,
-    setPomodoro,
+    setPomodoroLocal,
+    removePomodoroLocal,
     remainingTime,
     isRunning,
     pomodoros,
@@ -47,7 +48,7 @@ export const SetPomodoroStore = ({
           table: "pomodoros",
         },
         (payload) => {
-          setPomodoro(payload.new.id, pomodoroSchema.parse(payload.new));
+          setPomodoroLocal(payload.new.id, pomodoroSchema.parse(payload.new));
         }
       )
       .on(
@@ -58,7 +59,7 @@ export const SetPomodoroStore = ({
           table: "pomodoros",
         },
         (payload) => {
-          setPomodoro(payload.new.id, pomodoroSchema.parse(payload.new));
+          setPomodoroLocal(payload.new.id, pomodoroSchema.parse(payload.new));
         }
       )
       .on(
@@ -69,10 +70,7 @@ export const SetPomodoroStore = ({
           table: "pomodoros",
         },
         (payload) => {
-          const pomodoro = pomodoroSchema.parse(payload.old);
-          const newPomodoros = new Map(pomodoros);
-          newPomodoros.delete(pomodoro.id);
-          setPomodoros(newPomodoros);
+          removePomodoroLocal(payload.old.id);
         }
       )
       .subscribe();

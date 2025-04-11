@@ -126,7 +126,9 @@ export type PomodoroType = "focus" | "shortBreak" | "longBreak";
 export interface PomodoroListSlice {
   pomodoros: Map<number, PomodoroInfo> | null;
   setPomodoros: (data: Map<number, PomodoroInfo>) => void;
-  setPomodoro: (id: number, pomodoro: PomodoroInfo) => void;
+  setPomodoroLocal: (id: number, pomodoro: PomodoroInfo) => void;
+  removePomodoroLocal: (id: number) => void;
+  addPomodoro: (pomodoro: AddPomodoroForm) => Promise<any>;
 }
 
 export interface ActivePomodoroSlice {
@@ -157,7 +159,8 @@ export const ItemTypes = {
 export interface TaskStore {
   tasks: Map<number, TaskInfo> | null;
   setTasks: (data: Map<number, TaskInfo>) => void;
-  setTask: (id: number, task: TaskInfo) => void;
+  setTaskLocal: (id: number, task: TaskInfo) => void;
+  removeTaskLocal: (id: number) => void;
   addTask: (task: AddTaskForm) => Promise<any>;
   editTask: (taskId: number, task: EditTaskForm) => Promise<any>;
   deleteTask: (taskId: number) => Promise<any>;

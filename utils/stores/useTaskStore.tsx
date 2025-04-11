@@ -5,10 +5,17 @@ import { create } from "zustand";
 export const useTaskStore = create<TaskStore>()((set, get) => ({
   tasks: null,
   setTasks: (data) => set({ tasks: data }),
-  setTask: (id, task) => {
+  setTaskLocal: (id, task) => {
     set((state) => {
       const tasks = new Map(state.tasks);
       tasks.set(id, task);
+      return { tasks };
+    });
+  },
+  removeTaskLocal: (id) => {
+    set((state) => {
+      const tasks = new Map(state.tasks);
+      tasks.delete(id);
       return { tasks };
     });
   },
