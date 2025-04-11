@@ -144,10 +144,21 @@ export interface ActivePomodoroSlice {
 
 export type PomodoroStore = PomodoroListSlice & ActivePomodoroSlice;
 
+export interface DragItem {
+  type: string;
+  id: number;
+}
+
+// Constants for our drag types
+export const ItemTypes = {
+  TASK: "task",
+};
+
 export interface TaskStore {
   tasks: Map<number, TaskInfo> | null;
   setTasks: (data: Map<number, TaskInfo>) => void;
   addTask: (task: AddTaskForm) => Promise<any>;
   editTask: (taskId: number, task: EditTaskForm) => Promise<any>;
   deleteTask: (taskId: number) => Promise<any>;
+  removeTaskFromPomodoro: (taskId: number) => Promise<any>;
 }

@@ -13,5 +13,10 @@ const nextConfig: NextConfig = {
 };
 
 const withVercelToolbar = require("@vercel/toolbar/plugins/next")();
+
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
 // Instead of module.exports = nextConfig, do this:
-module.exports = withVercelToolbar(nextConfig);
+module.exports = withBundleAnalyzer(withVercelToolbar(nextConfig));

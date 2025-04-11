@@ -1,6 +1,12 @@
 "use client";
 
-import { AddPomodoroForm, PomodoroInfo, PomodoroType } from "@/interfaces";
+import {
+  AddPomodoroForm,
+  DragItem,
+  ItemTypes,
+  PomodoroInfo,
+  PomodoroType,
+} from "@/interfaces";
 import {
   secondsToTimeSimple,
   secondsToTimeString,
@@ -13,21 +19,77 @@ import { Input } from "@heroui/input";
 import { TasksList } from "../TasksList";
 import { TimeInput } from "@heroui/date-input";
 import { PomodoroDropdown } from "@/app/app/pomodoro/PomodoroDropdown";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PomodoroTypeDropdown } from "./PomodoroTypeDropdown";
 import { parseTime } from "@internationalized/date";
-import { Button, Form, useToast } from "@heroui/react";
+import { addToast, Button, Form, useToast } from "@heroui/react";
 import { IoAdd } from "react-icons/io5";
 import { addPomodoro } from "@/app/app/pomodoro/actions";
+import { useDrop } from "react-dnd";
+import { useTaskStore } from "@/utils/stores/useTaskStore";
 
 export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
+  const { editTask, removeTaskFromPomodoro } = useTaskStore();
   const [form, setForm] = useState<AddPomodoroForm>({
     name: "",
     type: "focus",
     duration: 1500,
   });
-
   const [errors, setErrors] = useState({});
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Set up drop functionality
+  const [{ isOver, canDrop }, drop] = useDrop(
+    () => ({
+      accept: ItemTypes.TASK,
+      drop: (item: DragItem) => {
+        if (pomodoro) {
+          handleTaskDrop(item.id);
+        }
+        return undefined;
+      },
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      }),
+    }),
+    [pomodoro]
+  );
+
+  // Function to handle dropped task
+  const handleTaskDrop = async (taskId: number) => {
+    if (!pomodoro) return;
+
+    try {
+      const result = await editTask(taskId, {
+        pomodoroId: pomodoro.id,
+      });
+
+      if (result?.error) {
+        addToast({
+          title: "Error",
+          description: "Failed to assign task to pomodoro",
+          color: "danger",
+        });
+      } else {
+        addToast({
+          title: "Success",
+          description: "Task assigned to pomodoro",
+          color: "success",
+        });
+      }
+    } catch (error) {
+      console.error("Error assigning task:", error);
+      addToast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        color: "danger",
+      });
+    }
+  };
+
+  // Connect the drop ref to our component
+  drop(ref);
 
   return (
     <Form
@@ -44,7 +106,12 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
       }}
       validationErrors={errors}
     >
-      <Card className="min-h-40 max-h-60">
+      <Card
+        className={`min-h-40 max-h-60 ${
+          isOver ? "border-2 border-primary" : ""
+        }`}
+        ref={ref}
+      >
         <CardHeader>
           <div className="flex flex-row flex-1 justify-between items-center gap-2">
             <div className="flex-1 flex flex-row justify-start">
@@ -66,9 +133,9 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
             <div className="flex-1 flex flex-row justify-center">
               {pomodoro ? (
                 <p>
-                  {form.type === "focus"
+                  {pomodoro.type === "focus"
                     ? "Focus"
-                    : form.type === "shortBreak"
+                    : pomodoro.type === "shortBreak"
                     ? "Break"
                     : "Long Break"}
                 </p>

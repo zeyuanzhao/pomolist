@@ -1,8 +1,6 @@
 import { addTask, deleteTask, editTask } from "@/app/app/tasks/actions";
 import { TaskStore } from "@/interfaces";
-import { data } from "framer-motion/client";
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
 
 export const useTaskStore = create<TaskStore>()((set, get) => ({
   tasks: null,
@@ -15,5 +13,8 @@ export const useTaskStore = create<TaskStore>()((set, get) => ({
   },
   deleteTask: (taskId) => {
     return deleteTask(taskId);
+  },
+  removeTaskFromPomodoro: (taskId) => {
+    return editTask(taskId, { pomodoroId: null });
   },
 }));

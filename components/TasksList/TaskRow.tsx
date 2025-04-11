@@ -1,4 +1,4 @@
-import { TaskInfo } from "@/interfaces";
+import { DragItem, ItemTypes, TaskInfo } from "@/interfaces";
 import { timeSimple } from "@/utils/timeSeconds";
 import {
   Button,
@@ -8,44 +8,72 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@heroui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoPencil } from "react-icons/io5";
 import { EditForm } from "./EditForm";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
+import { useDrag } from "react-dnd";
 
 export const TaskRow = ({ task }: { task: TaskInfo }) => {
   const { editTask } = useTaskStore();
   const [hover, setHover] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
-  const toggleCompleted = () => {
+  const toggleCompleted = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering drag operation
     editTask(task.id, {
       completed: !task.completed,
     });
   };
 
+  // Set up drag functionality
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: ItemTypes.TASK,
+      item: { id: task.id, type: ItemTypes.TASK } as DragItem,
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }),
+    [task.id]
+  );
+
+  // Connect the drag ref to our component
+  drag(ref);
+
   return (
     <div
-      className="border-b-1 cursor-pointer hover:bg-hover/10"
+      ref={ref}
+      className={`border-b-1 cursor-pointer hover:bg-hover/10 ${
+        isDragging ? "opacity-50" : "opacity-100"
+      }`}
       onMouseEnter={() => {
         setHover(true);
       }}
       onMouseLeave={() => {
         setHover(false);
       }}
-      onClick={toggleCompleted}
     >
       <div
         key={task.id}
         className="flex flex-row items-center p-2 rounded-lg justify-between"
       >
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center">
           <Checkbox
             isSelected={task.completed}
-            onValueChange={toggleCompleted}
+            onValueChange={() => {}}
+            onClick={toggleCompleted}
           />
-          <p className={`${hover || task.completed ? "line-through" : ""}`}>
-            {task.name}
-          </p>
+          <div className="flex flex-col">
+            <p className={`${hover || task.completed ? "line-through" : ""}`}>
+              {task.name}
+            </p>
+            {task.pomodoroId && (
+              <div className="mt-1 text-xs text-gray-500">
+                Assigned to pomodoro
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex flex-row items-center gap-x-2">
           <Popover
