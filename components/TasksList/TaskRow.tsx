@@ -36,11 +36,15 @@ export const TaskRow = ({
     dndAvailable = false;
   }
 
-  const toggleCompleted = (e: React.MouseEvent) => {
+  const toggleCompleted = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    editTask(task.id, {
-      completed: !task.completed,
-    });
+    try {
+      await editTask(task.id, {
+        completed: !task.completed,
+      });
+    } catch (error) {
+      console.error("Error toggling task completion:", error);
+    }
   };
 
   const handleRemove = async (e: React.MouseEvent) => {
@@ -114,15 +118,15 @@ export const TaskRow = ({
         </div>
         <div className="flex flex-row items-center gap-x-2">
           {inPomodoro && (
-            <Button
-              isIconOnly
-              size="sm"
-              variant="light"
-              className={hover ? "visible" : "invisible"}
+            <button
+              className={
+                "hover:bg-hover/60 p-0.5 rounded-lg " +
+                (hover ? "visible" : "invisible")
+              }
               onClick={handleRemove}
             >
               <IoCloseOutline size="18px" />
-            </Button>
+            </button>
           )}
           <Popover
             showArrow
@@ -137,14 +141,14 @@ export const TaskRow = ({
             }}
           >
             <PopoverTrigger>
-              <div
+              <button
                 className={
                   "hover:bg-hover/60 p-0.5 rounded-lg " +
                   (hover ? "visible" : "invisible")
                 }
               >
                 <IoPencil size="18px" />
-              </div>
+              </button>
             </PopoverTrigger>
             <PopoverContent>
               {(titleProps) => (
