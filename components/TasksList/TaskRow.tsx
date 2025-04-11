@@ -9,24 +9,47 @@ import {
   PopoverTrigger,
 } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
-import { IoPencil } from "react-icons/io5";
+import { IoPencil, IoCloseOutline } from "react-icons/io5";
 import { EditForm } from "./EditForm";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
 import { useDrag } from "react-dnd";
+import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
 
-export const TaskRow = ({ task }: { task: TaskInfo }) => {
-  const { editTask } = useTaskStore();
+export const TaskRow = ({
+  task,
+  inPomodoro = false,
+}: {
+  task: TaskInfo;
+  inPomodoro?: boolean;
+}) => {
+  const { editTask, removeTaskFromPomodoro } = useTaskStore();
+  const { pomodoros } = usePomodoroStore();
   const [hover, setHover] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const toggleCompleted = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering drag operation
+    e.stopPropagation();
     editTask(task.id, {
       completed: !task.completed,
     });
   };
 
-  // Set up drag functionality
+  const handleRemove = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await removeTaskFromPomodoro(task.id);
+    } catch (error) {
+      console.error("Error removing task from pomodoro:", error);
+    }
+  };
+
+  const getPomodoroName = () => {
+    if (!task.pomodoroId || !pomodoros) return null;
+    const pomodoro = pomodoros.get(task.pomodoroId);
+    return pomodoro ? pomodoro.name : null;
+  };
+
+  // Set up drag functionality if not inside a pomodoro
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: ItemTypes.TASK,
@@ -34,12 +57,15 @@ export const TaskRow = ({ task }: { task: TaskInfo }) => {
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
+      canDrag: !inPomodoro, // Prevent dragging if already in a pomodoro
     }),
-    [task.id]
+    [task.id, inPomodoro]
   );
 
-  // Connect the drag ref to our component
-  drag(ref);
+  // Connect the drag ref to our component if not in a pomodoro
+  if (!inPomodoro) {
+    drag(ref);
+  }
 
   return (
     <div
@@ -53,6 +79,7 @@ export const TaskRow = ({ task }: { task: TaskInfo }) => {
       onMouseLeave={() => {
         setHover(false);
       }}
+      onClick={toggleCompleted}
     >
       <div
         key={task.id}
@@ -68,14 +95,25 @@ export const TaskRow = ({ task }: { task: TaskInfo }) => {
             <p className={`${hover || task.completed ? "line-through" : ""}`}>
               {task.name}
             </p>
-            {task.pomodoroId && (
+            {!inPomodoro && task.pomodoroId && (
               <div className="mt-1 text-xs text-gray-500">
-                Assigned to pomodoro
+                In pomodoro: {getPomodoroName()}
               </div>
             )}
           </div>
         </div>
         <div className="flex flex-row items-center gap-x-2">
+          {inPomodoro && (
+            <Button
+              isIconOnly
+              size="sm"
+              variant="light"
+              className={hover ? "visible" : "invisible"}
+              onClick={handleRemove}
+            >
+              <IoCloseOutline size="18px" />
+            </Button>
+          )}
           <Popover
             showArrow
             onClick={(e) => {

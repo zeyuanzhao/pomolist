@@ -2,7 +2,6 @@
 
 import { AddPomodoroTask } from "./AddPomodoroTask";
 import { TaskRow } from "./TaskRow";
-import { RemovableTaskRow } from "./RemovableTaskRow";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
 
 export const TasksList = ({
@@ -27,12 +26,7 @@ export const TasksList = ({
             return null;
           }
 
-          // Use RemovableTaskRow for tasks in a pomodoro, and regular TaskRow for tasks in the main list
-          return pomodoroId ? (
-            <RemovableTaskRow task={task} key={taskId} />
-          ) : (
-            <TaskRow task={task} key={taskId} />
-          );
+          return <TaskRow task={task} key={taskId} inPomodoro={!!pomodoroId} />;
         })}
       {pomodoroId && <AddPomodoroTask />}
     </div>

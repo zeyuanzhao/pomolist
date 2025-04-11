@@ -22,14 +22,14 @@ import { PomodoroDropdown } from "@/app/app/pomodoro/PomodoroDropdown";
 import { useRef, useState } from "react";
 import { PomodoroTypeDropdown } from "./PomodoroTypeDropdown";
 import { parseTime } from "@internationalized/date";
-import { addToast, Button, Form, useToast } from "@heroui/react";
+import { addToast, Button, Form, ScrollShadow, useToast } from "@heroui/react";
 import { IoAdd } from "react-icons/io5";
 import { addPomodoro } from "@/app/app/pomodoro/actions";
 import { useDrop } from "react-dnd";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
 
 export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
-  const { editTask, removeTaskFromPomodoro } = useTaskStore();
+  const { editTask } = useTaskStore();
   const [form, setForm] = useState<AddPomodoroForm>({
     name: "",
     type: "focus",
@@ -107,9 +107,7 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
       validationErrors={errors}
     >
       <Card
-        className={`min-h-40 max-h-60 ${
-          isOver ? "border-2 border-primary" : ""
-        }`}
+        className={`min-h-40 ${isOver ? "border-2 border-primary" : ""}`}
         ref={ref}
       >
         <CardHeader>
@@ -175,9 +173,11 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
           </div>
         </CardHeader>
         <Divider />
-        <CardBody>
+        <CardBody className="max-h-64 overflow-hidden">
           {pomodoro ? (
-            <TasksList pomodoroId={pomodoro.id} />
+            <ScrollShadow className="h-full">
+              <TasksList pomodoroId={pomodoro.id} />
+            </ScrollShadow>
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center">
               <Button isIconOnly type="submit">
