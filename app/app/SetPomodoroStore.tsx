@@ -70,7 +70,7 @@ export const SetPomodoroStore = ({
           table: "pomodoros",
         },
         (payload) => {
-          const pomodoro = pomodoroSchema.parse(payload.new);
+          const pomodoro = pomodoroSchema.parse(payload.old);
           const newPomodoros = new Map(pomodoros);
           newPomodoros.delete(pomodoro.id);
           setPomodoros(newPomodoros);
@@ -84,7 +84,7 @@ export const SetPomodoroStore = ({
         supabase.removeChannel(pomodoroChannel);
       }
     };
-  }, [pomodoros]);
+  }, []);
 
   // Loop audio if remainingTime is 0 and isRunning is true
   useEffect(() => {
