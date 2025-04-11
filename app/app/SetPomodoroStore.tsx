@@ -84,7 +84,7 @@ export const SetPomodoroStore = ({
         supabase.removeChannel(pomodoroChannel);
       }
     };
-  }, [pomodoros]);
+  }, []);
 
   // Loop audio if remainingTime is 0 and isRunning is true
   useEffect(() => {
