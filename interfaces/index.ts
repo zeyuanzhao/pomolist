@@ -149,7 +149,6 @@ export interface DragItem {
   id: number;
 }
 
-// Constants for our drag types
 export const ItemTypes = {
   TASK: "task",
 };

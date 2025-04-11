@@ -19,13 +19,13 @@ import { Input } from "@heroui/input";
 import { TasksList } from "../TasksList";
 import { TimeInput } from "@heroui/date-input";
 import { PomodoroDropdown } from "@/app/app/pomodoro/PomodoroDropdown";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PomodoroTypeDropdown } from "./PomodoroTypeDropdown";
 import { parseTime } from "@internationalized/date";
 import { addToast, Button, Form, ScrollShadow, useToast } from "@heroui/react";
 import { IoAdd } from "react-icons/io5";
 import { addPomodoro } from "@/app/app/pomodoro/actions";
-import { useDrop } from "react-dnd";
+import { useDrop, useDragDropManager } from "react-dnd";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
 
 export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
@@ -37,26 +37,38 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
   });
   const [errors, setErrors] = useState({});
   const ref = useRef<HTMLDivElement>(null);
+  const [isOver, setIsOver] = useState(false);
 
-  // Set up drop functionality
-  const [{ isOver, canDrop }, drop] = useDrop(
-    () => ({
-      accept: ItemTypes.TASK,
-      drop: (item: DragItem) => {
-        if (pomodoro) {
+  let dndAvailable = false;
+  try {
+    useDragDropManager();
+    dndAvailable = true;
+  } catch (e) {
+    dndAvailable = false;
+  }
+
+  if (dndAvailable && pomodoro) {
+    const [{ isOver: dragIsOver }, drop] = useDrop(
+      () => ({
+        accept: ItemTypes.TASK,
+        drop: (item: DragItem) => {
           handleTaskDrop(item.id);
-        }
-        return undefined;
-      },
-      collect: (monitor) => ({
-        isOver: monitor.isOver(),
-        canDrop: monitor.canDrop(),
+          return undefined;
+        },
+        collect: (monitor) => ({
+          isOver: monitor.isOver() && monitor.canDrop(),
+        }),
       }),
-    }),
-    [pomodoro]
-  );
+      [pomodoro]
+    );
 
-  // Function to handle dropped task
+    useEffect(() => {
+      setIsOver(dragIsOver);
+    }, [dragIsOver]);
+
+    drop(ref);
+  }
+
   const handleTaskDrop = async (taskId: number) => {
     if (!pomodoro) return;
 
@@ -87,9 +99,6 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
       });
     }
   };
-
-  // Connect the drop ref to our component
-  drop(ref);
 
   return (
     <Form

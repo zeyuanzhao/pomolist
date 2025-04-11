@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { IoPencil, IoCloseOutline } from "react-icons/io5";
 import { EditForm } from "./EditForm";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
-import { useDrag } from "react-dnd";
+import { useDrag, useDragDropManager } from "react-dnd";
 import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
 
 export const TaskRow = ({
@@ -26,6 +26,15 @@ export const TaskRow = ({
   const { pomodoros } = usePomodoroStore();
   const [hover, setHover] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  let dndAvailable = false;
+  try {
+    useDragDropManager();
+    dndAvailable = true;
+  } catch (e) {
+    dndAvailable = false;
+  }
 
   const toggleCompleted = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -49,21 +58,22 @@ export const TaskRow = ({
     return pomodoro ? pomodoro.name : null;
   };
 
-  // Set up drag functionality if not inside a pomodoro
-  const [{ isDragging }, drag] = useDrag(
-    () => ({
-      type: ItemTypes.TASK,
-      item: { id: task.id, type: ItemTypes.TASK } as DragItem,
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
+  if (dndAvailable && !inPomodoro) {
+    const [{ isDragging: dragging }, drag] = useDrag(
+      () => ({
+        type: ItemTypes.TASK,
+        item: { id: task.id, type: ItemTypes.TASK } as DragItem,
+        collect: (monitor) => ({
+          isDragging: monitor.isDragging(),
+        }),
       }),
-      canDrag: !inPomodoro, // Prevent dragging if already in a pomodoro
-    }),
-    [task.id, inPomodoro]
-  );
+      [task.id]
+    );
 
-  // Connect the drag ref to our component if not in a pomodoro
-  if (!inPomodoro) {
+    useEffect(() => {
+      setIsDragging(dragging);
+    }, [dragging]);
+
     drag(ref);
   }
 

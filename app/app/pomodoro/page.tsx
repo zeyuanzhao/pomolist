@@ -12,6 +12,7 @@ import {
 } from "react-icons/io5";
 import { LuMaximize2 } from "react-icons/lu";
 import { PomodoroDropdown } from "./PomodoroDropdown";
+import { DragDropWrapper } from "@/components/DragDropWrapper";
 
 const PomodoroPage = () => {
   const {
@@ -86,7 +87,11 @@ const PomodoroPage = () => {
       </div>
       <div className="flex-1 flex flex-col items-center justify-center">
         <ScrollShadow className="max-w-lg w-full max-h-80 mb-32">
-          {activeId && <TasksList pomodoroId={activeId} />}
+          {activeId && (
+            <DragDropWrapper>
+              <TasksList pomodoroId={activeId} />
+            </DragDropWrapper>
+          )}
         </ScrollShadow>
       </div>
     </div>
