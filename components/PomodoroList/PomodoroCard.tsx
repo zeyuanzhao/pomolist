@@ -24,12 +24,13 @@ import { PomodoroTypeDropdown } from "./PomodoroTypeDropdown";
 import { parseTime } from "@internationalized/date";
 import { addToast, Button, Form, ScrollShadow, useToast } from "@heroui/react";
 import { IoAdd } from "react-icons/io5";
-import { addPomodoro } from "@/app/app/pomodoro/actions";
 import { useDrop, useDragDropManager } from "react-dnd";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
+import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
 
 export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
   const { editTask } = useTaskStore();
+  const { addPomodoro } = usePomodoroStore();
   const [form, setForm] = useState<AddPomodoroForm>({
     name: "",
     type: "focus",

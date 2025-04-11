@@ -2,12 +2,36 @@ import { PomodoroStore } from "@/interfaces";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { timeStringToSeconds } from "../timeSeconds";
+import { addPomodoro } from "@/app/app/pomodoro/actions";
 
 export const usePomodoroStore = create<PomodoroStore>()(
   persist(
     (set, get) => ({
       pomodoros: null,
       setPomodoros: (data) => set({ pomodoros: data }),
+      setPomodoroLocal: (id, data) => {
+        set((state) => {
+          if (!state.pomodoros) {
+            return { pomodoros: new Map([[id, data]]) };
+          }
+          const pomodoros = new Map(state.pomodoros);
+          pomodoros.set(id, data);
+          return { pomodoros };
+        });
+      },
+      removePomodoroLocal: (id) => {
+        set((state) => {
+          if (!state.pomodoros) {
+            return { pomodoros: null };
+          }
+          const pomodoros = new Map(state.pomodoros);
+          pomodoros.delete(id);
+          return { pomodoros };
+        });
+      },
+      addPomodoro: (pomodoro) => {
+        return addPomodoro(pomodoro);
+      },
       activeId: null,
       setActiveId: (id) => {
         set({ activeId: id });
