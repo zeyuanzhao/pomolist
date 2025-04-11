@@ -78,7 +78,7 @@ export const SetTaskStore = ({
         supabase.removeChannel(channel);
       }
     };
-  }, [tasks]);
+  }, []);
 
   return null;
 };
