@@ -11,6 +11,9 @@ export const usePomodoroStore = create<PomodoroStore>()(
       setPomodoros: (data) => set({ pomodoros: data }),
       setPomodoroLocal: (id, data) => {
         set((state) => {
+          if (!state.pomodoros) {
+            return { pomodoros: new Map([[id, data]]) };
+          }
           const pomodoros = new Map(state.pomodoros);
           pomodoros.set(id, data);
           return { pomodoros };
@@ -18,6 +21,9 @@ export const usePomodoroStore = create<PomodoroStore>()(
       },
       removePomodoroLocal: (id) => {
         set((state) => {
+          if (!state.pomodoros) {
+            return { pomodoros: null };
+          }
           const pomodoros = new Map(state.pomodoros);
           pomodoros.delete(id);
           return { pomodoros };
