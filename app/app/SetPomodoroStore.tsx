@@ -70,7 +70,7 @@ export const SetPomodoroStore = ({
           table: "pomodoros",
         },
         (payload) => {
-          const pomodoro = pomodoroSchema.parse(payload.new);
+          const pomodoro = pomodoroSchema.parse(payload.old);
           const newPomodoros = new Map(pomodoros);
           newPomodoros.delete(pomodoro.id);
           setPomodoros(newPomodoros);
