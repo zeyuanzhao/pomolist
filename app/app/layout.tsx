@@ -2,11 +2,12 @@
 
 import { SideBar } from "@/components/SideBar";
 import { TaskAdder } from "@/components/TaskAdder";
-import { pomodoroSchema } from "@/interfaces";
+import { pomodoroSchema, taskSchema } from "@/interfaces";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { SetPomodoroStore } from "./SetPomodoroStore";
+import { SetTaskStore } from "./SetTaskStore";
 
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
   const pathname = (await headers()).get("x-next-pathname");
@@ -20,18 +21,32 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
     redirect("/login");
   }
 
-  let { data: pomodoros, error } = await supabase
+  let { data: pomodoros, error: errorPomodoros } = await supabase
     .from("pomodoros")
     .select("*")
     .eq("user_id", user.id);
 
-  if (error) {
-    console.error("Error fetching pomodoros:", error);
+  if (errorPomodoros) {
+    console.error("Error fetching pomodoros:", errorPomodoros);
     return;
   }
 
   if (pomodoros) {
     pomodoros = pomodoros?.map((pomodoro) => pomodoroSchema.parse(pomodoro));
+  }
+
+  let { data: tasks, error: errorTasks } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("user_id", user.id);
+
+  if (errorTasks) {
+    console.error("Error fetching tasks:", errorTasks);
+    return;
+  }
+
+  if (tasks) {
+    tasks = tasks?.map((task) => taskSchema.parse(task));
   }
 
   return (
@@ -43,7 +58,8 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
           <TaskAdder />
         </div>
       </div>
-      {pomodoros && <SetPomodoroStore pomodoros={pomodoros} />}
+      {pomodoros && <SetPomodoroStore initialPomodoros={pomodoros} />}
+      {tasks && <SetTaskStore initialTasks={tasks} />}
     </div>
   );
 };

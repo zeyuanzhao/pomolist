@@ -45,24 +45,18 @@ export const editTaskFormSchema = z.object({
   pomodoroId: z.number().nullish(),
 });
 
-// export interface AddTaskForm {
-//   name: string;
-//   description?: string | null;
-//   duration?: number | null;
-//   dueDate?: string | null;
-// }
-
-// export interface EditTaskForm {
-//   name?: string;
-//   description?: string | null;
-//   duration?: number | null;
-//   dueDate?: string | null;
-//   completed?: boolean;
-//   pomodoroId?: number | null;
-// }
+export const addPomodoroFormSchema = z.object({
+  name: z.string().min(1, "Pomodoro name is required"),
+  duration: z
+    .number()
+    .min(30, "Duration must be at least 30 seconds")
+    .optional(),
+  type: z.enum(["focus", "shortBreak", "longBreak"]),
+});
 
 export type AddTaskForm = z.infer<typeof addTaskFormSchema>;
 export type EditTaskForm = z.infer<typeof editTaskFormSchema>;
+export type AddPomodoroForm = z.infer<typeof addPomodoroFormSchema>;
 
 export const taskDbSchema = z.object({
   id: z.number(),
@@ -95,7 +89,7 @@ export type TaskInfo = z.infer<typeof taskSchema>;
 export const pomodoroDbSchema = z.object({
   id: z.number(),
   user_id: z.string(),
-  order_index: z.number(),
+  order_index: z.number().nullish(),
   name: z.string(),
   description: z.string().nullish(),
   completed: z.boolean(),
@@ -129,12 +123,12 @@ export interface Dimensions {
 
 export type PomodoroType = "focus" | "shortBreak" | "longBreak";
 
-export type PomodoroListSlice = {
+export interface PomodoroListSlice {
   pomodoros: Map<number, PomodoroInfo> | null;
   setPomodoros: (data: Map<number, PomodoroInfo>) => void;
-};
+}
 
-export type ActivePomodoroSlice = {
+export interface ActivePomodoroSlice {
   activeId: number | null;
   setActiveId: (id: number | null) => void;
   isRunning: boolean;
@@ -146,6 +140,24 @@ export type ActivePomodoroSlice = {
   pause: () => void;
   reset: () => void;
   complete: () => void;
-};
+}
 
 export type PomodoroStore = PomodoroListSlice & ActivePomodoroSlice;
+
+export interface DragItem {
+  type: string;
+  id: number;
+}
+
+export const ItemTypes = {
+  TASK: "task",
+};
+
+export interface TaskStore {
+  tasks: Map<number, TaskInfo> | null;
+  setTasks: (data: Map<number, TaskInfo>) => void;
+  addTask: (task: AddTaskForm) => Promise<any>;
+  editTask: (taskId: number, task: EditTaskForm) => Promise<any>;
+  deleteTask: (taskId: number) => Promise<any>;
+  removeTaskFromPomodoro: (taskId: number) => Promise<any>;
+}

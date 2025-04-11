@@ -15,20 +15,14 @@ const TasksPage = async () => {
     return <UserError />;
   }
 
-  let { data: initialTasks } = await supabase?.from("tasks").select("*");
-
-  if (initialTasks) {
-    initialTasks = initialTasks?.map((task) => taskSchema.parse(task));
-  }
-
   return (
     <div className="flex-1 flex flex-row justify-center">
-      <div className="flex-1 max-w-4xl pt-16">
+      <div className="flex-1 max-w-4xl pt-8 flex flex-col">
         <div>
           <h1 className="text-3xl font-bold">Tasks</h1>
         </div>
         <div>
-          <TasksList initialTasks={initialTasks as TaskInfo[]} />
+          <TasksList />
         </div>
       </div>
     </div>

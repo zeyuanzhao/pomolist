@@ -1,4 +1,4 @@
-import { TaskInfo } from "@/interfaces";
+import { DragItem, ItemTypes, TaskInfo } from "@/interfaces";
 import { timeSimple } from "@/utils/timeSeconds";
 import {
   Button,
@@ -8,23 +8,81 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@heroui/react";
-import { useEffect, useState } from "react";
-import { IoPencil } from "react-icons/io5";
+import { useEffect, useRef, useState } from "react";
+import { IoPencil, IoCloseOutline } from "react-icons/io5";
 import { EditForm } from "./EditForm";
-import { editTask } from "@/app/app/tasks/actions";
+import { useTaskStore } from "@/utils/stores/useTaskStore";
+import { useDrag, useDragDropManager } from "react-dnd";
+import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
 
-export const TaskRow = ({ task }: { task: TaskInfo }) => {
+export const TaskRow = ({
+  task,
+  inPomodoro = false,
+}: {
+  task: TaskInfo;
+  inPomodoro?: boolean;
+}) => {
+  const { editTask, removeTaskFromPomodoro } = useTaskStore();
+  const { pomodoros } = usePomodoroStore();
   const [hover, setHover] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
-  const toggleCompleted = () => {
+  let dndAvailable = false;
+  try {
+    useDragDropManager();
+    dndAvailable = true;
+  } catch (e) {
+    dndAvailable = false;
+  }
+
+  const toggleCompleted = (e: React.MouseEvent) => {
+    e.stopPropagation();
     editTask(task.id, {
       completed: !task.completed,
     });
   };
 
+  const handleRemove = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await removeTaskFromPomodoro(task.id);
+    } catch (error) {
+      console.error("Error removing task from pomodoro:", error);
+    }
+  };
+
+  const getPomodoroName = () => {
+    if (!task.pomodoroId || !pomodoros) return null;
+    const pomodoro = pomodoros.get(task.pomodoroId);
+    return pomodoro ? pomodoro.name : null;
+  };
+
+  if (dndAvailable && !inPomodoro) {
+    const [{ isDragging: dragging }, drag] = useDrag(
+      () => ({
+        type: ItemTypes.TASK,
+        item: { id: task.id, type: ItemTypes.TASK } as DragItem,
+        collect: (monitor) => ({
+          isDragging: monitor.isDragging(),
+        }),
+      }),
+      [task.id]
+    );
+
+    useEffect(() => {
+      setIsDragging(dragging);
+    }, [dragging]);
+
+    drag(ref);
+  }
+
   return (
     <div
-      className="border-b-1 cursor-pointer hover:bg-hover/10"
+      ref={ref}
+      className={`border-b-1 cursor-pointer hover:bg-hover/10 ${
+        isDragging ? "opacity-50" : "opacity-100"
+      }`}
       onMouseEnter={() => {
         setHover(true);
       }}
@@ -35,21 +93,46 @@ export const TaskRow = ({ task }: { task: TaskInfo }) => {
     >
       <div
         key={task.id}
-        className="flex flex-row items-center py-2 rounded-lg justify-between px-2"
+        className="flex flex-row items-center p-2 rounded-lg justify-between"
       >
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center">
           <Checkbox
             isSelected={task.completed}
-            onValueChange={toggleCompleted}
+            onValueChange={() => {}}
+            onClick={toggleCompleted}
           />
-          <p className={`${hover || task.completed ? "line-through" : ""}`}>
-            {task.name}
-          </p>
+          <div className="flex flex-col">
+            <p className={`${hover || task.completed ? "line-through" : ""}`}>
+              {task.name}
+            </p>
+            {!inPomodoro && task.pomodoroId && (
+              <div className="mt-1 text-xs text-gray-500">
+                In pomodoro: {getPomodoroName()}
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex flex-row items-center gap-x-2">
+          {inPomodoro && (
+            <Button
+              isIconOnly
+              size="sm"
+              variant="light"
+              className={hover ? "visible" : "invisible"}
+              onClick={handleRemove}
+            >
+              <IoCloseOutline size="18px" />
+            </Button>
+          )}
           <Popover
             showArrow
             onClick={(e) => {
+              e.stopPropagation();
+            }}
+            onMouseEnter={(e) => {
+              e.stopPropagation();
+            }}
+            onMouseLeave={(e) => {
               e.stopPropagation();
             }}
           >
