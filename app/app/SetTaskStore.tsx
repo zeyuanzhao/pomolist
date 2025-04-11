@@ -13,7 +13,8 @@ export const SetTaskStore = ({
   initialTasks: TaskInfo[];
 }) => {
   const supabase = createClient();
-  const { setTasks, addTask, deleteTask, editTask, tasks } = useTaskStore();
+  const { setTasks, setTask, addTask, deleteTask, editTask, tasks } =
+    useTaskStore();
   const [channel, setChannel] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
@@ -35,11 +36,7 @@ export const SetTaskStore = ({
             table: "tasks",
           },
           (payload) => {
-            debugger;
-            const task = taskSchema.parse(payload.new);
-            const newTasks = new Map(tasks);
-            newTasks.set(task.id, task);
-            setTasks(newTasks);
+            setTask(payload.new.id, taskSchema.parse(payload.new));
           }
         )
         .on(
@@ -50,10 +47,7 @@ export const SetTaskStore = ({
             table: "tasks",
           },
           (payload) => {
-            const task = taskSchema.parse(payload.new);
-            const newTasks = new Map(tasks);
-            newTasks.set(task.id, task);
-            setTasks(newTasks);
+            setTask(payload.new.id, taskSchema.parse(payload.new));
           }
         )
         .on(

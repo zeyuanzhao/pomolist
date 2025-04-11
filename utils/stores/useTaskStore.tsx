@@ -5,6 +5,13 @@ import { create } from "zustand";
 export const useTaskStore = create<TaskStore>()((set, get) => ({
   tasks: null,
   setTasks: (data) => set({ tasks: data }),
+  setTask: (id, task) => {
+    set((state) => {
+      const tasks = new Map(state.tasks);
+      tasks.set(id, task);
+      return { tasks };
+    });
+  },
   addTask: (task) => {
     return addTask(task);
   },

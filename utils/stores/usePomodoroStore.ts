@@ -8,6 +8,13 @@ export const usePomodoroStore = create<PomodoroStore>()(
     (set, get) => ({
       pomodoros: null,
       setPomodoros: (data) => set({ pomodoros: data }),
+      setPomodoro: (id, data) => {
+        set((state) => {
+          const pomodoros = new Map(state.pomodoros);
+          pomodoros.set(id, data);
+          return { pomodoros };
+        });
+      },
       activeId: null,
       setActiveId: (id) => {
         set({ activeId: id });

@@ -14,8 +14,14 @@ export const SetPomodoroStore = ({
   initialPomodoros: PomodoroInfo[];
 }) => {
   const supabase = createClient();
-  const { setPomodoros, setActiveId, remainingTime, isRunning, pomodoros } =
-    usePomodoroStore();
+  const {
+    setPomodoros,
+    setActiveId,
+    setPomodoro,
+    remainingTime,
+    isRunning,
+    pomodoros,
+  } = usePomodoroStore();
   const [channel, setChannel] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
@@ -41,11 +47,7 @@ export const SetPomodoroStore = ({
           table: "pomodoros",
         },
         (payload) => {
-          debugger;
-          const pomodoro = pomodoroSchema.parse(payload.new);
-          const newPomodoros = new Map(pomodoros);
-          newPomodoros.set(pomodoro.id, pomodoro);
-          setPomodoros(newPomodoros);
+          setPomodoro(payload.new.id, pomodoroSchema.parse(payload.new));
         }
       )
       .on(
@@ -56,10 +58,7 @@ export const SetPomodoroStore = ({
           table: "pomodoros",
         },
         (payload) => {
-          const pomodoro = pomodoroSchema.parse(payload.new);
-          const newPomodoros = new Map(pomodoros);
-          newPomodoros.set(pomodoro.id, pomodoro);
-          setPomodoros(newPomodoros);
+          setPomodoro(payload.new.id, pomodoroSchema.parse(payload.new));
         }
       )
       .on(
