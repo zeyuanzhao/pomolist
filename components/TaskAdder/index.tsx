@@ -1,9 +1,11 @@
 "use client";
 
 import { AddTaskForm } from "@/interfaces";
+import { showError } from "@/utils/showError";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
 import { secondsToTimeString, timeStringToSeconds } from "@/utils/timeSeconds";
 import {
+  addToast,
   Button,
   DatePicker,
   Form,
@@ -41,8 +43,15 @@ export const TaskAdder = () => {
         const res = await addTask(form);
         if (res?.error) {
           setErrors(res.error);
+          showError(res.error, "Error", "Failed to add task");
           return;
         }
+
+        addToast({
+          title: "Success",
+          description: "Task added successfully!",
+          color: "success",
+        });
       }}
       validationErrors={errors}
     >
