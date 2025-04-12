@@ -83,9 +83,9 @@ export const editTask = async (
       duration: data.data.duration
         ? `${data.data.duration} seconds`
         : undefined,
-      due_date: data.data.dueDate || undefined,
+      due_date: data.data.dueDate,
       completed: data.data.completed,
-      pomodoro_id: data.data.pomodoroId || undefined,
+      pomodoro_id: data.data.pomodoroId,
     })
     .eq("id", taskId)
     .eq("user_id", user.id);
