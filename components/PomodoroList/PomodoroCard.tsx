@@ -27,6 +27,7 @@ import { IoAdd } from "react-icons/io5";
 import { useDrop, useDragDropManager } from "react-dnd";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
 import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
+import { showError } from "@/utils/showError";
 
 export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
   const { editTask } = useTaskStore();
@@ -79,11 +80,7 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
       });
 
       if (result?.error) {
-        addToast({
-          title: "Error",
-          description: "Failed to assign task to pomodoro",
-          color: "danger",
-        });
+        showError(result.error, "Error", "Failed to assign task to pomodoro");
       } else {
         addToast({
           title: "Success",
@@ -93,11 +90,7 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
       }
     } catch (error) {
       console.error("Error assigning task:", error);
-      addToast({
-        title: "Error",
-        description: "An unexpected error occurred",
-        color: "danger",
-      });
+      showError(error, "Error", "An unexpected error occurred");
     }
   };
 
@@ -111,6 +104,7 @@ export const PomodoroCard = ({ pomodoro }: { pomodoro?: PomodoroInfo }) => {
         const res = await addPomodoro(form);
         if (res?.error) {
           setErrors(res.error);
+          showError(res.error, "Error", "Failed to add pomodoro");
           return;
         }
       }}

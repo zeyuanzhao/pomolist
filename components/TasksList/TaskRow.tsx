@@ -14,6 +14,7 @@ import { EditForm } from "./EditForm";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
 import { useDrag, useDragDropManager } from "react-dnd";
 import { usePomodoroStore } from "@/utils/stores/usePomodoroStore";
+import { showError } from "@/utils/showError";
 
 export const TaskRow = ({
   task,
@@ -43,16 +44,15 @@ export const TaskRow = ({
         completed: !task.completed,
       });
     } catch (error) {
-      console.error("Error toggling task completion:", error);
+      showError(error, "Error", "Failed to update task status");
     }
   };
 
   const handleRemove = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    try {
-      await removeTaskFromPomodoro(task.id);
-    } catch (error) {
-      console.error("Error removing task from pomodoro:", error);
+    const res = await removeTaskFromPomodoro(task.id);
+    if (res?.error) {
+      showError(res.error, "Error", "Failed to remove task from pomodoro");
     }
   };
 
@@ -124,6 +124,12 @@ export const TaskRow = ({
                 (hover ? "visible" : "invisible")
               }
               onClick={handleRemove}
+              onMouseEnter={(e) => {
+                e.stopPropagation();
+              }}
+              onMouseLeave={(e) => {
+                e.stopPropagation();
+              }}
             >
               <IoCloseOutline size="18px" />
             </button>

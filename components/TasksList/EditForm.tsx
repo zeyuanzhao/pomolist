@@ -1,4 +1,5 @@
 import { TaskInfo } from "@/interfaces";
+import { showError } from "@/utils/showError";
 import { useTaskStore } from "@/utils/stores/useTaskStore";
 import { secondsToTimeString, timeStringToSeconds } from "@/utils/timeSeconds";
 import {
@@ -46,8 +47,7 @@ export const EditForm = ({ task }: { task: TaskInfo }) => {
         const res = await editTask(task.id, form);
         if (res?.error) {
           setErrors(res.error);
-          console.log(res.error);
-          return;
+          showError(res.error, "Error", "Failed to edit task");
         }
       }}
       validationErrors={errors}
@@ -121,7 +121,12 @@ export const EditForm = ({ task }: { task: TaskInfo }) => {
           className="bg-bgs hover:bg-hover hover:brightness-[85%]"
           type="button"
           isIconOnly
-          onPress={() => deleteTask(task.id)}
+          onPress={async () => {
+            const res = await deleteTask(task.id);
+            if (res?.error) {
+              showError(res.error, "Error", "Failed to delete task");
+            }
+          }}
         >
           <IoTrashOutline />
         </Button>
