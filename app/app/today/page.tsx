@@ -8,6 +8,7 @@ import { ScrollShadow } from "@heroui/scroll-shadow";
 import { useState } from "react";
 import { Switch } from "@heroui/react";
 import { DragDropWrapper } from "@/components/DragDropWrapper";
+import { getLocalTimeZone, today } from "@internationalized/date";
 
 const TodayPage = () => {
   const [hideAssignedTasks, setHideAssignedTasks] = useState(false);
@@ -31,7 +32,10 @@ const TodayPage = () => {
         <div className="flex-1 flex flex-row gap-x-8 pt-8">
           <ScrollShadow className="max-w-lg w-full max-h-[calc(100vh-14rem)]">
             <DragDropWrapper>
-              <TasksList hideAssigned={hideAssignedTasks} />
+              <TasksList
+                hideAssigned={hideAssignedTasks}
+                date={today(getLocalTimeZone()).toString()}
+              />
             </DragDropWrapper>
           </ScrollShadow>
           <ScrollShadow className="max-w-lg w-full max-h-[calc(100vh-14rem)] p-6">
