@@ -27,10 +27,12 @@ const PomodoroPage = () => {
     complete,
   } = usePomodoroStore();
 
+  const pomodoroType = activeId && pomodoros && pomodoros.get(activeId)?.type;
+
   return (
     <div className="bg-bgp flex flex-col flex-1 text-tp">
-      <div className="h-16 px-4 flex flex-row items-center justify-between">
-        <div>
+      <div className="h-16 px-4 flex flex-row items-center">
+        <div className="flex-1 flex flex-row justify-start">
           <PomodoroDropdown
             pomodoros={pomodoros}
             currentPomodoro={activeId}
@@ -38,7 +40,16 @@ const PomodoroPage = () => {
             triggerClassName="bg-bgs/20 text-tp"
           />
         </div>
-        <div>
+        <div className="flex-1 flex flex-row justify-center">
+          <p>
+            {pomodoroType === "focus"
+              ? "Focus"
+              : pomodoroType === "shortBreak"
+              ? "Break"
+              : "Long Break"}
+          </p>
+        </div>
+        <div className="flex-1 flex flex-row justify-end">
           <Button
             isIconOnly
             className="rounded-lg bg-transparent border-0 text-tp hover:bg-hover/25"
