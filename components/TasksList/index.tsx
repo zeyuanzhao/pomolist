@@ -21,6 +21,7 @@ export const TasksList = ({
   date?: string;
 }) => {
   const { tasks } = useTaskStore();
+  let empty = true;
   return (
     <div className="w-full h-full flex flex-col">
       {tasks &&
@@ -43,9 +44,10 @@ export const TasksList = ({
           ) {
             return null;
           }
-
+          empty = false;
           return <TaskRow task={task} key={taskId} inPomodoro={!!pomodoroId} />;
         })}
+      {empty && <p>No tasks available.</p>}
       {/* {pomodoroId && <AddPomodoroTask />} */}
     </div>
   );
