@@ -47,7 +47,11 @@ export const TasksList = ({
           empty = false;
           return <TaskRow task={task} key={taskId} inPomodoro={!!pomodoroId} />;
         })}
-      {empty && <p>No tasks available.</p>}
+      {empty && pomodoroId ? (
+        <p>Drag tasks here to add.</p>
+      ) : (
+        <p>No tasks available.</p>
+      )}
       {/* {pomodoroId && <AddPomodoroTask />} */}
     </div>
   );
