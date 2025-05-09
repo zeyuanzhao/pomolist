@@ -21,38 +21,35 @@ export const TasksList = ({
   date?: string;
 }) => {
   const { tasks } = useTaskStore();
-  let empty = true;
+  const filteredTasks = tasks
+    ? Array.from(tasks).filter(([_, task]) => {
+        if (pomodoroId && task.pomodoroId !== pomodoroId) return false;
+        if (!pomodoroId && hideAssigned && task.pomodoroId) return false;
+        if (
+          !pomodoroId &&
+          date &&
+          task.dueDate &&
+          parseDate(date).compare(
+            toCalendarDate(parseAbsolute(task.dueDate, getLocalTimeZone()))
+          ) < 0
+        )
+          return false;
+        return true;
+      })
+    : [];
+
+  const isEmpty = filteredTasks.length === 0;
   return (
     <div className="w-full h-full flex flex-col">
-      {tasks &&
-        Array.from(tasks).map(([taskId, task]) => {
-          if (pomodoroId && task.pomodoroId !== pomodoroId) {
-            return null;
-          }
+      {filteredTasks.map(([taskId, task]) => (
+        <TaskRow task={task} key={taskId} inPomodoro={!!pomodoroId} />
+      ))}
 
-          if (!pomodoroId && hideAssigned && task.pomodoroId) {
-            return null;
-          }
-
-          if (
-            !pomodoroId &&
-            date &&
-            task.dueDate &&
-            parseDate(date).compare(
-              toCalendarDate(parseAbsolute(task.dueDate, getLocalTimeZone()))
-            ) < 0
-          ) {
-            return null;
-          }
-          empty = false;
-          return <TaskRow task={task} key={taskId} inPomodoro={!!pomodoroId} />;
-        })}
-      {empty && pomodoroId ? (
+      {isEmpty && pomodoroId ? (
         <p>Drag tasks here to add.</p>
-      ) : (
+      ) : isEmpty ? (
         <p>No tasks available.</p>
-      )}
-      {/* {pomodoroId && <AddPomodoroTask />} */}
+      ) : null}
     </div>
   );
 };
